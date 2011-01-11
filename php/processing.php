@@ -1,54 +1,40 @@
 <?php
 /*
- *
- * SMember Plugin
- * Copyright (c) 1431 H / 2010 M
- * by Indra Sutriadi Pipii (indra.sutriadi@gmail.com)
- *
- * @file: ./php/processing.php
- * @desc: processing members data
- *
+ *      processing.php
+ *      
+ *      Copyright 2011 Indra Sutriadi Pipii <indra.sutriadi@gmail.com>
+ *      
+ *      This program is free software; you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation; either version 2 of the License, or
+ *      (at your option) any later version.
+ *      
+ *      This program is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *      
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program; if not, write to the Free Software
+ *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ *      MA 02110-1301, USA.
  */
 
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * Easy set variables
-	 */
-	
-	/* Array of database columns which should be read and sent back to DataTables. Use a space where
-	 * you want to insert a non-database field (for example a counter or static image)
-	 */
 	$aColumns = array( 'member_id', 'member_name', 'member_type_name', 'inst_name', 'member_email' );
-	
-	/* Indexed column (used for fast and accurate table cardinality) */
 	$sIndexColumn = "member_id";
-	
-	/* DB table to use */
 	$sTable = "member";
 	
-	/* Database connection information */
 	$gaSql['user']       = "altroot";
 	$gaSql['password']   = "sqladmin";
 	$gaSql['db']         = "slims";
 	$gaSql['server']     = "localhost";
 	
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * If you just want to use the basic configuration for DataTables with PHP server-side, there is
-	 * no need to edit below this line
-	 */
-	
-	/* 
-	 * MySQL connection
-	 */
 	$gaSql['link'] =  mysql_pconnect( $gaSql['server'], $gaSql['user'], $gaSql['password']  ) or
 		die( 'Could not open connection to server' );
 	
 	mysql_select_db( $gaSql['db'], $gaSql['link'] ) or 
 		die( 'Could not select database '. $gaSql['db'] );
 	
-	
-	/* 
-	 * Paging
-	 */
 	$sLimit = "";
 	if ( isset( $_POST['iDisplayStart'] ) && $_POST['iDisplayLength'] != '-1' )
 	{
