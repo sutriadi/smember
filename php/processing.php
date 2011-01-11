@@ -10,114 +10,6 @@
  *
  */
 
-/*
-if (!defined('SENAYAN_BASE_DIR')) {
-	require '../../../../../sysconfig.inc.php';
-	require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
-}
-require SENAYAN_BASE_DIR.'admin/default/session_check.inc.php';
-
-$can_read = utility::havePrivilege('plugins', 'r');
-$can_read = utility::havePrivilege('plugins', 'w');
-
-if (!$can_read) {
-      die('<div class="errorBox">You dont have enough privileges to view this section</div>');
-}
-
-include('../../conf.php');
-include('../../func.php');
-
-checkip($conf);
-checken();
-
-include('./function.php');
-*/
-
-	/* Paging */
-/*
-	$sLimit = "";
-	if ( isset( $_POST['iDisplayStart'] ) && $_POST['iDisplayLength'] != '-1' )
-	{
-		$sLimit = "LIMIT ".mysql_real_escape_string( $_POST['iDisplayStart'] )
-			. ", "
-			. mysql_real_escape_string( $_POST['iDisplayLength'] );
-	}
-*/
-	
-	/* Ordering */
-/*
-	if ( isset( $_POST['iSortCol_0'] ) )
-	{
-		$sOrder = "ORDER BY  ";
-		for ( $i = 0 ; $i < mysql_real_escape_string( $_POST['iSortingCols'] ) ; $i++ )
-		{
-			$sOrder .= fnColumnToField(mysql_real_escape_string( $_POST['iSortCol_'.$i] ))." "
-				. mysql_real_escape_string( $_POST['sSortDir_'.$i] )
-				. ", ";
-		}
-		$sOrder = substr_replace( $sOrder, "", -2 );
-	}
-*/
-	
-	/* Filtering */
-/*
-	$sWhere = "";
-	if ( $_POST['sSearch'] != "" )
-	{
-		$sWhere = "WHERE member_id LIKE '%".mysql_real_escape_string( $_POST['sSearch'] )."%' OR ".
-		                "member_name LIKE '%".mysql_real_escape_string( $_POST['sSearch'] )."%' OR ".
-		                "member_type_name LIKE '%".mysql_real_escape_string( $_POST['sSearch'] )."%' OR ".
-		                "inst_name LIKE '%".mysql_real_escape_string( $_POST['sSearch'] )."%' OR ".
-		                "member_email LIKE '%".mysql_real_escape_string( $_POST['sSearch'] )."%'";
-	}
-	
-	$sQuery = "SELECT SQL_CALC_FOUND_ROWS member_id, member_name, member_type_name, inst_name, member_email "
-		."FROM member "
-		."LEFT JOIN mst_member_type ON mst_member_type.member_type_id = member.member_type_id "
-		."$sWhere "
-		."$sOrder "
-		."$sLimit ";
-	//~ $rResult = mysql_query( $sQuery, $gaSql['link'] ) or die(mysql_error());
-	$rResult = $dbs->query($sQuery);
-	
-	$sQuery = "SELECT FOUND_ROWS()";
-	//~ $rResultFilterTotal = mysql_query( $sQuery, $gaSql['link'] ) or die(mysql_error());
-	$rResultFilterTotal = $dbs->query($sQuery);
-	//~ $aResultFilterTotal = mysql_fetch_array($rResultFilterTotal);
-	$aResultFilterTotal = $rResultFilterTotal->fetch_row();
-	$iFilteredTotal = $aResultFilterTotal[0];
-	
-	$sQuery = "SELECT COUNT(member_id) FROM member";
-	//~ $rResultTotal = mysql_query( $sQuery, $gaSql['link'] ) or die(mysql_error());
-	$rResultTotal = $dbs->query($sQuery);
-	//~ $aResultTotal = mysql_fetch_array($rResultTotal);
-	$aResultTotal = $rResultTotal->fetch_row();
-	$iTotal = $aResultTotal[0];
-	
-	$sOutput = '{'
-		. '"sEcho": '.intval($_POST['sEcho']).', '
-		. '"iTotalRecords": '.$iTotal.', '
-		. '"iTotalDisplayRecords": '.$iFilteredTotal.', '
-		. '"aaData": [ ';
-	while ( $aRow = $rResult->fetch_assoc() )
-	{
-		$sOutput .= "["
-			. '"<input type=\"checkbox\" id=\"'.$aRow['member_id'].'\" name=\"members[]\" value=\"'.$aRow['member_id'].'\" /> ",'
-			. '"'.str_replace('"', '/"', $aRow['member_id']).'",'
-			. '"'.str_replace('"', '/"', $aRow['member_name']).'",'
-			. '"'.str_replace('"', '/"', $aRow['member_type_name']).'",'
-			. '"'.str_replace('"', '/"', $aRow['inst_name']).'",'
-			. '"'.str_replace('"', '/"', $aRow['member_email']).'"'
-		. "],";
-	}
-	$sOutput = substr_replace( $sOutput, "", -1 );
-	$sOutput .= '] }';
-	
-	header('Content-type: text/plain');
-	echo $sOutput;
-*/
-
-
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * Easy set variables
 	 */
@@ -138,7 +30,6 @@ include('./function.php');
 	$gaSql['password']   = "sqladmin";
 	$gaSql['db']         = "slims";
 	$gaSql['server']     = "localhost";
-	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * If you just want to use the basic configuration for DataTables with PHP server-side, there is
