@@ -115,7 +115,7 @@ if (!$can_read)
 			</button>
 		</div>
 		<address style="text-align: center;">
-			Copyright &copy; 1431 - 1432 H / 2010 - 2011 M by Indra Sutriadi Pipii.<br />
+			Copyright &copy; 1431-1432 H / 2010-2011 M by Indra Sutriadi Pipii.<br />
 			Build with jQuery-UI + dataTables plugin.
 		</address>
 	</div>
