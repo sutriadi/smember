@@ -160,6 +160,7 @@
 	$sOutput .= '"aaData": [ ';
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
+		print_r($aRow);
 		$sOutput .= "[";
 		$sOutput .= '"<input type=\"checkbox\" id=\"' . $aRow['member_id'] . '\" name=\"members[]\" value=\"' . $aRow['member_id'] .  '\" />", ';
 		for ( $i=0 ; $i<count($aColumns) ; $i++ )
