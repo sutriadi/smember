@@ -11,7 +11,8 @@
  */
 
 if (!defined('SENAYAN_BASE_DIR')) {
-    require '../../../../sysconfig.inc.php';
+    //~ require '../../../../sysconfig.inc.php';
+    require '../slims/sysconfig.inc.php';
     require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
 }
 
@@ -24,8 +25,11 @@ if (!$can_read && !$can_write) {
 	die('<div>You dont have enough privileges to view this section</div>');
 }
 
-include('../conf.php');
-include('../func.php');
+//~ include('../conf.php');
+//~ include('../func.php');
+
+include('../plugins/conf.php');
+include('../plugins/func.php');
 
 checkip($conf);
 checken();
