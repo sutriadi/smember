@@ -28,12 +28,14 @@ if (!$can_read && !$can_write) {
 //~ include('../conf.php');
 //~ include('../func.php');
 
+/*
 include('../plugins/conf.php');
 include('../plugins/func.php');
 
 checkip($conf);
 checken();
 checkref();
+*/
 
 $dirmods = "./mods";
 $files = scandir($dirmods);
