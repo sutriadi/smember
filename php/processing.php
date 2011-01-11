@@ -56,10 +56,6 @@
 			mysql_real_escape_string( $_POST['iDisplayLength'] );
 	}
 	
-	
-	/*
-	 * Ordering
-	 */
 	$sOrder = "";
 	if ( isset( $_POST['iSortCol_0'] ) )
 	{
@@ -80,13 +76,6 @@
 		}
 	}
 	
-	
-	/* 
-	 * Filtering
-	 * NOTE this does not match the built-in DataTables filtering which does it
-	 * word by word on any field. It's possible to do here, but concerned about efficiency
-	 * on very large tables, and MySQL's regex functionality is very limited
-	 */
 	$sWhere = "";
 	if ( isset($_POST['sSearch']) != "" )
 	{
@@ -116,11 +105,6 @@
 		}
 	}
 	
-	
-	/*
-	 * SQL queries
-	 * Get data to display
-	 */
 	$sQuery = "" .
 		" SELECT SQL_CALC_FOUND_ROWS " . str_replace(" , ", " ", implode(", ", $aColumns)).
 		" FROM $sTable " .
@@ -131,7 +115,6 @@
 	"";
 	$rResult = mysql_query( $sQuery, $gaSql['link'] ) or die(mysql_error());
 	
-	/* Data set length after filtering */
 	$sQuery = "
 		SELECT FOUND_ROWS()
 	";
@@ -139,7 +122,6 @@
 	$aResultFilterTotal = mysql_fetch_array($rResultFilterTotal);
 	$iFilteredTotal = $aResultFilterTotal[0];
 	
-	/* Total data set length */
 	$sQuery = "
 		SELECT COUNT(".$sIndexColumn.")
 		FROM   $sTable
@@ -148,10 +130,6 @@
 	$aResultTotal = mysql_fetch_array($rResultTotal);
 	$iTotal = $aResultTotal[0];
 	
-	
-	/*
-	 * Output
-	 */
 	$sEcho = isset($_POST['sEcho']) ? $_POST['sEcho'] : '';
 	$sOutput = '{';
 	$sOutput .= '"sEcho": '.$sEcho.', ';
@@ -166,14 +144,6 @@
 		{
 			$sOutput .= '"'.str_replace('"', '\"', $aRow[ $aColumns[$i] ]).'",';
 		}
-		
-		/*
-		 * Optional Configuration:
-		 * If you need to add any extra columns (add/edit/delete etc) to the table, that aren't in the
-		 * database - you can do it here
-		 */
-		
-		
 		$sOutput = substr_replace( $sOutput, "", -1 );
 		$sOutput .= "],";
 	}
