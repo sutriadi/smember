@@ -7,6 +7,20 @@
  *      
  */
 
+if (!defined('SENAYAN_BASE_DIR')) {
+	//~ require '../../../../../sysconfig.inc.php';
+	require '../../slims/sysconfig.inc.php';
+	require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
+}
+require SENAYAN_BASE_DIR.'admin/default/session_check.inc.php';
+
+$can_read = utility::havePrivilege('plugins', 'r');
+$can_read = utility::havePrivilege('plugins', 'w');
+
+if (!$can_read) {
+      die('<div class="errorBox">You dont have enough privileges to view this section</div>');
+}
+
 	/* Database connection information. Change lines below */
 	$gaSql['user']       = "altroot";
 	$gaSql['password']   = "sqladmin";
