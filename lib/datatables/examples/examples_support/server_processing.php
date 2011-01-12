@@ -3,20 +3,25 @@
 	 * Easy set variables
 	 */
 	
-	/* Array of database columns which should be read and sent back to DataTables */
+	/* Array of database columns which should be read and sent back to DataTables. Use a space where
+	 * you want to insert a non-database field (for example a counter or static image)
+	 */
 	$aColumns = array( 'engine', 'browser', 'platform', 'version', 'grade' );
 	
 	/* Indexed column (used for fast and accurate table cardinality) */
 	$sIndexColumn = "id";
 	
+	/* DB table to use */
+	$sTable = "ajax";
+	
 	/* Database connection information */
-	$gaSql['user']       = "root";
-	$gaSql['password']   = "xampp";
-	$gaSql['db']         = "ajax";
+	$gaSql['user']       = "";
+	$gaSql['password']   = "";
+	$gaSql['db']         = "";
 	$gaSql['server']     = "localhost";
 	
 	/* REMOVE THIS LINE (it just includes my SQL connection user/pass) */
-	//~ include( $_SERVER['DOCUMENT_ROOT']."/datatables/mysql.php" );
+	include( $_SERVER['DOCUMENT_ROOT']."/datatables/mysql.php" );
 	
 	
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -53,10 +58,18 @@
 		$sOrder = "ORDER BY  ";
 		for ( $i=0 ; $i<intval( $_GET['iSortingCols'] ) ; $i++ )
 		{
-			$sOrder .= $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
-			 	".mysql_real_escape_string( $_GET['sSortDir_'.$i] ) .", ";
+			if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
+			{
+				$sOrder .= $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
+				 	".mysql_real_escape_string( $_GET['sSortDir_'.$i] ) .", ";
+			}
 		}
+		
 		$sOrder = substr_replace( $sOrder, "", -2 );
+		if ( $sOrder == "ORDER BY" )
+		{
+			$sOrder = "";
+		}
 	}
 	
 	
@@ -69,12 +82,30 @@
 	$sWhere = "";
 	if ( $_GET['sSearch'] != "" )
 	{
-		$sWhere = "WHERE ";
+		$sWhere = "WHERE (";
 		for ( $i=0 ; $i<count($aColumns) ; $i++ )
 		{
 			$sWhere .= $aColumns[$i]." LIKE '%".mysql_real_escape_string( $_GET['sSearch'] )."%' OR ";
 		}
 		$sWhere = substr_replace( $sWhere, "", -3 );
+		$sWhere .= ')';
+	}
+	
+	/* Individual column filtering */
+	for ( $i=0 ; $i<count($aColumns) ; $i++ )
+	{
+		if ( $_GET['bSearchable_'.$i] == "true" && $_GET['sSearch_'.$i] != '' )
+		{
+			if ( $sWhere == "" )
+			{
+				$sWhere = "WHERE ";
+			}
+			else
+			{
+				$sWhere .= " AND ";
+			}
+			$sWhere .= $aColumns[$i]." LIKE '%".mysql_real_escape_string($_GET['sSearch_'.$i])."%' ";
+		}
 	}
 	
 	
@@ -83,8 +114,8 @@
 	 * Get data to display
 	 */
 	$sQuery = "
-		SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $aColumns)."
-		FROM   ajax
+		SELECT SQL_CALC_FOUND_ROWS ".str_replace(" , ", " ", implode(", ", $aColumns))."
+		FROM   $sTable
 		$sWhere
 		$sOrder
 		$sLimit
@@ -102,7 +133,7 @@
 	/* Total data set length */
 	$sQuery = "
 		SELECT COUNT(".$sIndexColumn.")
-		FROM   ajax
+		FROM   $sTable
 	";
 	$rResultTotal = mysql_query( $sQuery, $gaSql['link'] ) or die(mysql_error());
 	$aResultTotal = mysql_fetch_array($rResultTotal);
@@ -112,42 +143,31 @@
 	/*
 	 * Output
 	 */
-	$sOutput = '{';
-	$sOutput .= '"sEcho": '.intval($_GET['sEcho']).', ';
-	$sOutput .= '"iTotalRecords": '.$iTotal.', ';
-	$sOutput .= '"iTotalDisplayRecords": '.$iFilteredTotal.', ';
-	$sOutput .= '"aaData": [ ';
+	$output = array(
+		"sEcho" => intval($_GET['sEcho']),
+		"iTotalRecords" => $iTotal,
+		"iTotalDisplayRecords" => $iFilteredTotal,
+		"aaData" => array()
+	);
+	
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
-		$sOutput .= "[";
+		$row = array();
 		for ( $i=0 ; $i<count($aColumns) ; $i++ )
 		{
 			if ( $aColumns[$i] == "version" )
 			{
-				/* Special output formatting for 'version' */
-				$sOutput .= ($aRow[ $aColumns[$i] ]=="0") ?
-					'"-",' :
-					'"'.str_replace('"', '\"', $aRow[ $aColumns[$i] ]).'",';
+				/* Special output formatting for 'version' column */
+				$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
 			}
-			else
+			else if ( $aColumns[$i] != ' ' )
 			{
 				/* General output */
-				$sOutput .= '"'.str_replace('"', '\"', $aRow[ $aColumns[$i] ]).'",';
+				$row[] = $aRow[ $aColumns[$i] ];
 			}
 		}
-		
-		/*
-		 * Optional Configuration:
-		 * If you need to add any extra columns (add/edit/delete etc) to the table, that aren't in the
-		 * database - you can do it here
-		 */
-		
-		
-		$sOutput = substr_replace( $sOutput, "", -1 );
-		$sOutput .= "],";
+		$output['aaData'][] = $row;
 	}
-	$sOutput = substr_replace( $sOutput, "", -1 );
-	$sOutput .= '] }';
 	
-	echo $sOutput;
+	echo json_encode( $output );
 ?>

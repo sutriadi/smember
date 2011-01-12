@@ -1,7 +1,6 @@
 <?php
   /* MySQL connection */
-	//~ include( $_SERVER['DOCUMENT_ROOT']."/datatables/mysql.php" ); /* ;-) */
-	include("./server.php");
+	include( $_SERVER['DOCUMENT_ROOT']."/datatables/mysql.php" ); /* ;-) */
 	
 	$gaSql['link'] =  mysql_pconnect( $gaSql['server'], $gaSql['user'], $gaSql['password']  ) or
 		die( 'Could not open connection to server' );
@@ -91,14 +90,14 @@
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
 		$sOutput .= "[";
-		$sOutput .= '"'.str_replace('"', '/"', $aRow['engine']).'",';
-		$sOutput .= '"'.str_replace('"', '/"', $aRow['browser']).'",';
-		$sOutput .= '"'.str_replace('"', '/"', $aRow['platform']).'",';
+		$sOutput .= '"'.str_replace('"', '\"', $aRow['engine']).'",';
+		$sOutput .= '"'.str_replace('"', '\"', $aRow['browser']).'",';
+		$sOutput .= '"'.str_replace('"', '\"', $aRow['platform']).'",';
 		if ( $aRow['version'] == "0" )
 			$sOutput .= '"-",';
 		else
-			$sOutput .= '"'.str_replace('"', '/"', $aRow['version']).'",';
-		$sOutput .= '"'.str_replace('"', '/"', $aRow['grade']).'"';
+			$sOutput .= '"'.str_replace('"', '\"', $aRow['version']).'",';
+		$sOutput .= '"'.str_replace('"', '\"', $aRow['grade']).'"';
 		$sOutput .= "],";
 	}
 	$sOutput = substr_replace( $sOutput, "", -1 );

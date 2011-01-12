@@ -2,33 +2,22 @@
 /*
  *      processing.php
  *      
- *      Copyright 2011 Indra Sutriadi Pipii <indra.sutriadi@gmail.com>
+ *      from examples_support, DataTables 1.7.5
+ *      Modified by Indra Sutriadi Pipii <indra.sutriadi@gmail.com>
  *      
- *      This program is free software; you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation; either version 2 of the License, or
- *      (at your option) any later version.
- *      
- *      This program is distributed in the hope that it will be useful,
- *      but WITHOUT ANY WARRANTY; without even the implied warranty of
- *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *      GNU General Public License for more details.
- *      
- *      You should have received a copy of the GNU General Public License
- *      along with this program; if not, write to the Free Software
- *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- *      MA 02110-1301, USA.
  */
 
-	$aColumns = array( 'member_id', 'member_name', 'member_type_name', 'inst_name', 'member_email' );
-	$sIndexColumn = "member_id";
-	$sTable = "member";
-	
+	/* Database connection information. Change lines below */
 	$gaSql['user']       = "altroot";
 	$gaSql['password']   = "sqladmin";
 	$gaSql['db']         = "slims";
 	$gaSql['server']     = "localhost";
-	
+
+	/* Don't change lines below */
+	$aColumns = array( 'member_id', 'member_name', 'member_type_name', 'inst_name', 'member_email' );
+	$sIndexColumn = "member_id";
+	$sTable = "member";
+		
 	$gaSql['link'] =  mysql_pconnect( $gaSql['server'], $gaSql['user'], $gaSql['password']  ) or
 		die( 'Could not open connection to server' );
 	
@@ -117,11 +106,11 @@
 	$iTotal = $aResultTotal[0];
 	
 	$sEcho = isset($_POST['sEcho']) ? $_POST['sEcho'] : '';
-	$sOutput = '{';
-	$sOutput .= '"sEcho": '.$sEcho.', ';
-	$sOutput .= '"iTotalRecords": '.$iTotal.', ';
-	$sOutput .= '"iTotalDisplayRecords": '.$iFilteredTotal.', ';
-	$sOutput .= '"aaData": [ ';
+	$sOutput = '{' .
+		'"sEcho": '.$sEcho.', ' .
+		'"iTotalRecords": '.$iTotal.', ' .
+		'"iTotalDisplayRecords": '.$iFilteredTotal.', ' .
+		'"aaData": [ ';
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
 		$sOutput .= "[";

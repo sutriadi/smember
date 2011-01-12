@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" type="image/ico" href="http://www.sprymedia.co.uk/media/images/favicon.ico" />
+		<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/media/images/favicon.ico" />
 		
 		<title>DataTables example</title>
 		<style type="text/css" title="currentStyle">
@@ -12,11 +12,10 @@
 		<script type="text/javascript" language="javascript" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="../../media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8">
-			var oTable;
 			var asInitVals = new Array();
 			
 			$(document).ready(function() {
-				oTable = $('#example').dataTable( {
+				var oTable = $('#example').dataTable( {
 					"oLanguage": {
 						"sSearch": "Search all columns:"
 					}
@@ -62,7 +61,7 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>The filtering functionality that is provided by <i>DataTables</i> is very useful for quickly search through the information in the table - however the search is global, and you (or the end user) may wish to filter only on a particular column of data. To met this need the <i>DataTables</i> <b>fnFilter()</b> API function allow you to specify a column to limit to search to. Note that this works in-combination with the global search filter!</p>
+			<p>The filtering functionality that is provided by <i>DataTables</i> is very useful for quickly search through the information in the table - however the search is global, and you (or the end user) may wish to filter only on a particular column of data. To met this need the <i>DataTables</i> <b>fnFilter()</b> API function allow you to specify a column to limit to search to. Note that this works in-combination with the global search filter. Further note that because the input elements are outside of the control of DataTables, with state saving enabled, stored values are not automatically restored - please see <a href="http://datatables.net/forums/comments.php?DiscussionID=2864#Item_3">this post in the forum</a> for how to do this.</p>
 			<p>The example below shows a table which has a text input box for each column in the footer element of the table. This allows the data in each column to be quickly filtered upon by the end user.</p>
 			
 			<h1>Live example</h1>
@@ -497,11 +496,10 @@
 			
 			
 			<h1>Initialisation code</h1>
-			<pre>var oTable;
-var asInitVals = new Array();
+			<pre>var asInitVals = new Array();
 
 $(document).ready(function() {
-	oTable = $('#example').dataTable( {
+	var oTable = $('#example').dataTable( {
 		"oLanguage": {
 			"sSearch": "Search all columns:"
 		}
@@ -553,6 +551,13 @@ $(document).ready(function() {
 				<li><a href="../basic_init/dom.html">DOM positioning</a></li>
 				<li><a href="../basic_init/state_save.html">State saving</a></li>
 				<li><a href="../basic_init/alt_pagination.html">Alternative pagination styles</a></li>
+				<li>Scrolling: 
+					<a href="../basic_init/scroll_x.html">Horizontal</a> / 
+					<a href="../basic_init/scroll_y.html">Vertical</a> / 
+					<a href="../basic_init/scroll_xy.html">Both</a> / 
+					<a href="../basic_init/scroll_y_theme.html">Themed</a> / 
+					<a href="../basic_init/scroll_y_infinite.html">Infinite</a>
+				</li>
 				<li><a href="../basic_init/language.html">Change language information (internationalisation)</a></li>
 				<li><a href="../basic_init/themes.html">ThemeRoller themes (Smoothness)</a></li>
 			</ul>
@@ -564,8 +569,9 @@ $(document).ready(function() {
 				<li><a href="../advanced_init/column_render.html">Column rendering</a></li>
 				<li><a href="../advanced_init/html_sort.html">Sorting without HTML tags</a></li>
 				<li><a href="../advanced_init/dom_multiple_elements.html">Multiple table controls (sDom)</a></li>
+				<li><a href="../advanced_init/length_menu.html">Defining length menu options</a></li>
 				<li><a href="../advanced_init/dom_toolbar.html">Custom toolbar (element) around table</a></li>
-				<li><a href="../advanced_init/sorting_control.html">Set sorting controls</a></li>
+				<li><a href="../advanced_init/highlight.html">Row highlighting with CSS</a></li>
 				<li><a href="../advanced_init/complex_header.html">Column grouping through col/row spans</a></li>
 				<li><a href="../advanced_init/row_grouping.html">Row grouping</a></li>
 				<li><a href="../advanced_init/row_callback.html">Row callback</a></li>
@@ -595,7 +601,8 @@ $(document).ready(function() {
 			<h2>API</h2>
 			<ul>
 				<li><a href="../api/add_row.html">Dynamically add a new row</a></li>
-				<li><a href="../api/multi_filter.html">Individual column filtering</a></li>
+				<li><a href="../api/multi_filter.html">Individual column filtering (using "input" elements)</a></li>
+				<li><a href="../api/multi_filter_select.html">Individual column filtering (using "select" elements)</a></li>
 				<li><a href="../api/highlight.html">Highlight rows and columns</a></li>
 				<li><a href="../api/row_details.html">Show and hide details about a particular record</a></li>
 				<li><a href="../api/select_row.html">User selectable rows (multiple rows)</a></li>
@@ -604,6 +611,8 @@ $(document).ready(function() {
 				<li><a href="../api/form.html">Submit form with elements in table</a></li>
 				<li><a href="../api/counter_column.html">Index column (static number column)</a></li>
 				<li><a href="../api/show_hide.html">Show and hide columns dynamically</a></li>
+				<li><a href="../api/api_in_init.html">API function use in initialisation object (callback)</a></li>
+				<li><a href="../api/tabs_and_scrolling.html">DataTables scrolling and tabs</a></li>
 				<li><a href="../api/regex.html">Regular expression filtering</a></li>
 			</ul>
 			
@@ -614,6 +623,7 @@ $(document).ready(function() {
 				<li><a href="../plug-ins/paging_plugin.html">Custom pagination controls</a></li>
 				<li><a href="../plug-ins/range_filtering.html">Range filtering / custom filtering</a></li>
 				<li><a href="../plug-ins/dom_sort.html">Live DOM sorting</a></li>
+				<li><a href="../plug-ins/html_sort.html">Automatic HTML type detection</a></li>
 			</ul>
 			
 			

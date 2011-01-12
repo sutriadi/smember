@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" type="image/ico" href="http://www.sprymedia.co.uk/media/images/favicon.ico" />
+		<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/media/images/favicon.ico" />
 		
 		<title>DataTables example</title>
 		<style type="text/css" title="currentStyle">
@@ -12,27 +12,52 @@
 		<script type="text/javascript" language="javascript" src="../../media/js/jquery.js"></script>
 		<script type="text/javascript" language="javascript" src="../../media/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8">
-			var goTable;
-			
-			function fnFilterNormal ()
+			function fnFilterGlobal ()
 			{
-				var jqInputs = $('#filter_norm input');
-				var iColumn = jqInputs[1].value == "" ? null : jqInputs[1].value;
-				goTable.fnFilter( jqInputs[0].value, iColumn );
+				$('#example').dataTable().fnFilter( 
+					$("#global_filter").val(),
+					null, 
+					$("#global_regex")[0].checked, 
+					$("#global_smart")[0].checked
+				);
 			}
 			
-			function fnFilterRegex ()
+			function fnFilterColumn ( i )
 			{
-				var jqInputs = $('#filter_regex input');
-				var iColumn = jqInputs[1].value == "" ? null : jqInputs[1].value;
-				goTable.fnFilter( jqInputs[0].value, iColumn, false );
+				$('#example').dataTable().fnFilter( 
+					$("#col"+(i+1)+"_filter").val(),
+					i, 
+					$("#col"+(i+1)+"_regex")[0].checked, 
+					$("#col"+(i+1)+"_smart")[0].checked
+				);
 			}
 			
 			$(document).ready(function() {
-				goTable = $('#example').dataTable();
+				$('#example').dataTable();
 				
-				$('#filter_norm input').keyup( fnFilterNormal );
-				$('#filter_regex input').keyup( fnFilterRegex );
+				$("#global_filter").keyup( fnFilterGlobal );
+				$("#global_regex").click( fnFilterGlobal );
+				$("#global_smart").click( fnFilterGlobal );
+				
+				$("#col1_filter").keyup( function() { fnFilterColumn( 0 ); } );
+				$("#col1_regex").click(  function() { fnFilterColumn( 0 ); } );
+				$("#col1_smart").click(  function() { fnFilterColumn( 0 ); } );
+				
+				$("#col2_filter").keyup( function() { fnFilterColumn( 1 ); } );
+				$("#col2_regex").click(  function() { fnFilterColumn( 1 ); } );
+				$("#col2_smart").click(  function() { fnFilterColumn( 1 ); } );
+				
+				$("#col3_filter").keyup( function() { fnFilterColumn( 2 ); } );
+				$("#col3_regex").click(  function() { fnFilterColumn( 2 ); } );
+				$("#col3_smart").click(  function() { fnFilterColumn( 2 ); } );
+				
+				$("#col4_filter").keyup( function() { fnFilterColumn( 3 ); } );
+				$("#col4_regex").click(  function() { fnFilterColumn( 3 ); } );
+				$("#col4_smart").click(  function() { fnFilterColumn( 3 ); } );
+				
+				$("#col5_filter").keyup( function() { fnFilterColumn( 4 ); } );
+				$("#col5_regex").click(  function() { fnFilterColumn( 4 ); } );
+				$("#col5_smart").click(  function() { fnFilterColumn( 4 ); } );
 			} );
 		</script>
 	</head>
@@ -43,26 +68,59 @@
 			</div>
 			
 			<h1>Preamble</h1>
-			<p>Regular expression filtering is very powerful and can allow you to customise the filtering done by DataTables to a very high degree. The example shown below has two custom input filters, one for "normal" filtering and the other for regular expression inputs. You can also specify which column you want the filter to apply to.</p>
+			<p>Filtering a table is one of the most common user interactions with a DataTables table, and DataTables provides a number of methods for you to control this interaction. There is a global filter, and a filter for each individual column. The global filter acts on each column.</p>
+			<p>Each filter (global or column) can be marked as a regular expression (allowing you to create very complex interactions) and as a smart filter or not. When smart filtering is enabled on a particular filter, DataTables will modify the user input string to a complex regular expression which can make filtering more intuitive.</p>
+			<p>This example allows you to "play" with the various filtering options that DataTables provides.</p>
 			
 			<h1>Live example</h1>
 			
-			<table cellpadding="0" cellspacing="5" border="0">
+			<table cellpadding="0" cellspacing="0" border="0" class="display">
+				<thead>
 				<tr>
-					<td></td>
-					<td>Filter</td>
-					<td>Column (leave blank for all - starts at index 0)</td>
+					<th>Target</th>
+					<th>Filter text</th>
+					<th>Treat as regex</th>
+					<th>Use smart filter</th>
 				</tr>
-				<tr id="filter_norm">
-					<td align="right">Normal filtering:</td>
-					<td><input type="text" name="normal_filter"></td>
-					<td><input type="text" name="normal_filter_col"></td>
-				</tr>
-				<tr id="filter_regex">
-					<td align="right">Regex filtering:</td>
-					<td><input type="text" name="regex_filter"></td>
-					<td><input type="text" name="regex_filter_col"></td>
-				</tr>
+				</thead>
+				<tbody>
+					<tr id="filter_global">
+						<td align="center">Global filtering</td>
+						<td align="center"><input type="text"     name="global_filter" id="global_filter"></td>
+						<td align="center"><input type="checkbox" name="global_regex"  id="global_regex" ></td>
+						<td align="center"><input type="checkbox" name="global_smart"  id="global_smart"  checked></td>
+					</tr>
+					<tr id="filter_col1">
+						<td align="center">Column 1</td>
+						<td align="center"><input type="text"     name="col1_filter" id="col1_filter"></td>
+						<td align="center"><input type="checkbox" name="col1_regex"  id="col1_regex"></td>
+						<td align="center"><input type="checkbox" name="col1_smart"  id="col1_smart" checked></td>
+					</tr>
+					<tr id="filter_col2">
+						<td align="center">Column 2</td>
+						<td align="center"><input type="text"     name="col2_filter" id="col2_filter"></td>
+						<td align="center"><input type="checkbox" name="col2_regex"  id="col2_regex"></td>
+						<td align="center"><input type="checkbox" name="col2_smart"  id="col2_smart" checked></td>
+					</tr>
+					<tr id="filter_col3">
+						<td align="center">Column 3</td>
+						<td align="center"><input type="text"     name="col3_filter" id="col3_filter"></td>
+						<td align="center"><input type="checkbox" name="col3_regex"  id="col3_regex"></td>
+						<td align="center"><input type="checkbox" name="col3_smart"  id="col3_smart" checked></td>
+					</tr>
+					<tr id="filter_col4">
+						<td align="center">Column 4</td>
+						<td align="center"><input type="text"     name="col4_filter" id="col4_filter"></td>
+						<td align="center"><input type="checkbox" name="col4_regex"  id="col4_regex"></td>
+						<td align="center"><input type="checkbox" name="col4_smart"  id="col4_smart" checked></td>
+					</tr>
+					<tr id="filter_col5">
+						<td align="center">Column 5</td>
+						<td align="center"><input type="text"     name="col5_filter" id="col5_filter"></td>
+						<td align="center"><input type="checkbox" name="col5_regex"  id="col5_regex"></td>
+						<td align="center"><input type="checkbox" name="col5_smart"  id="col5_smart" checked></td>
+					</tr>
+				</tbody>
 			</table>
 			
 			<div id="demo">
@@ -496,27 +554,38 @@
 			
 			
 			<h1>Initialisation code</h1>
-			<pre>var goTable;
-
-function fnFilterNormal ()
+			<pre>function fnFilterGlobal ()
 {
-	var jqInputs = $('#filter_norm input');
-	var iColumn = jqInputs[1].value == "" ? null : jqInputs[1].value;
-	goTable.fnFilter( jqInputs[0].value, iColumn );
+	$('#example').dataTable().fnFilter( 
+		$("#global_filter").val(),
+		null, 
+		$("#global_regex")[0].checked, 
+		$("#global_smart")[0].checked
+	);
 }
 
-function fnFilterRegex ()
+function fnFilterColumn ( i )
 {
-	var jqInputs = $('#filter_regex input');
-	var iColumn = jqInputs[1].value == "" ? null : jqInputs[1].value;
-	goTable.fnFilter( jqInputs[0].value, iColumn, false );
+	$('#example').dataTable().fnFilter( 
+		$("#col"+(i+1)+"_filter").val(),
+		i, 
+		$("#col"+(i+1)+"_regex")[0].checked, 
+		$("#col"+(i+1)+"_smart")[0].checked
+	);
 }
 
 $(document).ready(function() {
-	goTable = $('#example').dataTable();
+	$('#example').dataTable();
 	
-	$('#filter_norm input').keyup( fnFilterNormal );
-	$('#filter_regex input').keyup( fnFilterRegex );
+	$("#global_filter").keyup( fnFilterGlobal );
+	$("#global_regex").click( fnFilterGlobal );
+	$("#global_smart").click( fnFilterGlobal );
+	
+	$("#col1_filter").keyup( function() { fnFilterColumn( 0 ); } );
+	$("#col1_regex").click(  function() { fnFilterColumn( 0 ); } );
+	$("#col1_smart").click(  function() { fnFilterColumn( 0 ); } );
+	
+	// ... etc for the other four columns
 } );</pre>
 			
 			
@@ -532,6 +601,13 @@ $(document).ready(function() {
 				<li><a href="../basic_init/dom.html">DOM positioning</a></li>
 				<li><a href="../basic_init/state_save.html">State saving</a></li>
 				<li><a href="../basic_init/alt_pagination.html">Alternative pagination styles</a></li>
+				<li>Scrolling: 
+					<a href="../basic_init/scroll_x.html">Horizontal</a> / 
+					<a href="../basic_init/scroll_y.html">Vertical</a> / 
+					<a href="../basic_init/scroll_xy.html">Both</a> / 
+					<a href="../basic_init/scroll_y_theme.html">Themed</a> / 
+					<a href="../basic_init/scroll_y_infinite.html">Infinite</a>
+				</li>
 				<li><a href="../basic_init/language.html">Change language information (internationalisation)</a></li>
 				<li><a href="../basic_init/themes.html">ThemeRoller themes (Smoothness)</a></li>
 			</ul>
@@ -543,8 +619,9 @@ $(document).ready(function() {
 				<li><a href="../advanced_init/column_render.html">Column rendering</a></li>
 				<li><a href="../advanced_init/html_sort.html">Sorting without HTML tags</a></li>
 				<li><a href="../advanced_init/dom_multiple_elements.html">Multiple table controls (sDom)</a></li>
+				<li><a href="../advanced_init/length_menu.html">Defining length menu options</a></li>
 				<li><a href="../advanced_init/dom_toolbar.html">Custom toolbar (element) around table</a></li>
-				<li><a href="../advanced_init/sorting_control.html">Set sorting controls</a></li>
+				<li><a href="../advanced_init/highlight.html">Row highlighting with CSS</a></li>
 				<li><a href="../advanced_init/complex_header.html">Column grouping through col/row spans</a></li>
 				<li><a href="../advanced_init/row_grouping.html">Row grouping</a></li>
 				<li><a href="../advanced_init/row_callback.html">Row callback</a></li>
@@ -574,7 +651,8 @@ $(document).ready(function() {
 			<h2>API</h2>
 			<ul>
 				<li><a href="../api/add_row.html">Dynamically add a new row</a></li>
-				<li><a href="../api/multi_filter.html">Individual column filtering</a></li>
+				<li><a href="../api/multi_filter.html">Individual column filtering (using "input" elements)</a></li>
+				<li><a href="../api/multi_filter_select.html">Individual column filtering (using "select" elements)</a></li>
 				<li><a href="../api/highlight.html">Highlight rows and columns</a></li>
 				<li><a href="../api/row_details.html">Show and hide details about a particular record</a></li>
 				<li><a href="../api/select_row.html">User selectable rows (multiple rows)</a></li>
@@ -583,6 +661,8 @@ $(document).ready(function() {
 				<li><a href="../api/form.html">Submit form with elements in table</a></li>
 				<li><a href="../api/counter_column.html">Index column (static number column)</a></li>
 				<li><a href="../api/show_hide.html">Show and hide columns dynamically</a></li>
+				<li><a href="../api/api_in_init.html">API function use in initialisation object (callback)</a></li>
+				<li><a href="../api/tabs_and_scrolling.html">DataTables scrolling and tabs</a></li>
 				<li><a href="../api/regex.html">Regular expression filtering</a></li>
 			</ul>
 			
@@ -593,6 +673,7 @@ $(document).ready(function() {
 				<li><a href="../plug-ins/paging_plugin.html">Custom pagination controls</a></li>
 				<li><a href="../plug-ins/range_filtering.html">Range filtering / custom filtering</a></li>
 				<li><a href="../plug-ins/dom_sort.html">Live DOM sorting</a></li>
+				<li><a href="../plug-ins/html_sort.html">Automatic HTML type detection</a></li>
 			</ul>
 			
 			

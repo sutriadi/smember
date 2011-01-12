@@ -23,26 +23,27 @@
 		<script type="text/javascript" language="javascript" src="../../js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			$(document).ready(function() {
-				var iStart = new Date().getTime();
-				if ( typeof console != 'undefined' ) {
-					console.profile();
-				}
 				var oTable = $('#example').dataTable();
-				//var oSettings = oTable.fnSettings();
-				if ( typeof console != 'undefined' ) {
-					console.profileEnd();
-				}
+				var iStart = new Date().getTime();
 				
 				//if ( typeof console != 'undefined' ) {
 				//	console.profile();
 				//}
-				//oTable.fnSort( [[1, 'asc']] );
+				//for ( var i=0 ; i<1 ; i++ )
+				//{
+				//	var oTable = $('#example').dataTable({"bDestroy": true});
+				//}
 				//if ( typeof console != 'undefined' ) {
 				//	console.profileEnd();
 				//}
 				
+				oTable.fnSort( [[ 1, 'asc' ]] );
+				oTable.fnSort( [[ 2, 'asc' ]] );
+				oTable.fnSort( [[ 1, 'asc' ]] );
+				oTable.fnSort( [[ 2, 'asc' ]] );
+				
 				var iEnd = new Date().getTime();
-				document.getElementById('output').innerHTML = "Test took "+(iEnd-iStart)+"mS";
+				document.getElementById('output').innerHTML = "Test took "+(iEnd-iStart)+" mS";
 			} );
 		</script>
 	</head>
@@ -79,7 +80,7 @@
 	while ( $aRow = mysql_fetch_array( $rResult ) )
 	{
 		echo '<tr>';
-		echo '<td>'.$aRow['id'].'</td>';
+		echo '<td><a href="1">'.$aRow['id'].'</a></td>';
 		echo '<td>'.$aRow['name'].'</td>';
 		echo '<td>'.$aRow['phone'].'</td>';
 		echo '<td>'.$aRow['email'].'</td>';
@@ -89,25 +90,12 @@
 		echo '<td>'.$aRow['country'].'</td>';
 		echo '<td>'.$aRow['zip2'].'</td>';
 		echo '</tr>';
-		
-		//echo '<tr>';
-		//echo '<td>'.$aRow['id'].'</td>';
-		//echo '<td>'.$aRow['name'].'</td>';
-		//echo '<td>'.$aRow['phone'].'</td>';
-		//echo '<td>'.$aRow['email'].'</td>';
-		//echo '<td>'.$aRow['city'].'</td>';
-		//echo '<td>'.$aRow['zip'].'</td>';
-		//echo '<td>'.$aRow['state'].'</td>';
-		//echo '<td>'.$aRow['country'].'</td>';
-		//echo '<td>'.$aRow['zip2'].'</td>';
-		//echo '</tr>';
 	}
 ?>
 	</tbody>
 </table>
 			</div>
 			<div class="spacer"></div>
-			
 			
 			<div id="footer" style="text-align:center;">
 				<span style="font-size:10px;">
