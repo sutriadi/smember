@@ -23,13 +23,11 @@ if (!$can_read) {
       die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 }
 
-/*
 include('../../conf.php');
 include('../../func.php');
 
 checkip($conf);
 checken();
-*/
 
 	$gaSql['user']       = DB_USERNAME;
 	$gaSql['password']   = DB_PASSWORD;
