@@ -8,7 +8,9 @@
  */
 
 if (!defined('SENAYAN_BASE_DIR')) {
-	//~ require '../../../../../sysconfig.inc.php';
+/*
+	require '../../../../../sysconfig.inc.php';
+*/
 	require '../../slims/sysconfig.inc.php';
 	require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
 }
@@ -21,16 +23,12 @@ if (!$can_read) {
       die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 }
 
-//~ include('../../conf.php');
-//~ include('../../func.php');
 /*
-
-include('../../plugins/conf.php');
-include('../../plugins/func.php');
+include('../../conf.php');
+include('../../func.php');
 
 checkip($conf);
 checken();
-
 */
 
 	$gaSql['user']       = DB_USERNAME;
