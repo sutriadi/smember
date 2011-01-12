@@ -21,13 +21,23 @@ if (!$can_read) {
       die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 }
 
-	/* Database connection information. Change lines below */
-	$gaSql['user']       = "altroot";
-	$gaSql['password']   = "sqladmin";
-	$gaSql['db']         = "slims";
-	$gaSql['server']     = "localhost";
+//~ include('../../conf.php');
+//~ include('../../func.php');
+/*
 
-	/* Don't change lines below */
+include('../../plugins/conf.php');
+include('../../plugins/func.php');
+
+checkip($conf);
+checken();
+
+*/
+
+	$gaSql['user']       = DB_USERNAME;
+	$gaSql['password']   = DB_PASSWORD;
+	$gaSql['db']         = DB_NAME;
+	$gaSql['server']     = DB_HOST . ':' . DB_PORT;
+
 	$aColumns = array( 'member_id', 'member_name', 'member_type_name', 'inst_name', 'member_email' );
 	$sIndexColumn = "member_id";
 	$sTable = "member";
