@@ -1,13 +1,9 @@
 <?php
 /*
- *
- * SMember Plugin
- * Copyright (c) 1431 H / 2010 M
- * by Indra Sutriadi Pipii (indra.sutriadi@gmail.com)
- *
- * @file: info.php
- * @desc: information page
- *
+ *      info.php
+ *      
+ *      Copyright 2011 Indra Sutriadi Pipii <indra.sutriadi@gmail.com>
+ *      
  */
 
 $info = array(
