@@ -1,28 +1,26 @@
 <?php
 /*
- *
- * SMember Plugin
- * Copyright (c) 1431 H / 2010 M
- * by Indra Sutriadi Pipii (indra.sutriadi@gmail.com)
- *
- * @file: ./php/function.php
- * @desc: smember plugin functions
- *
+ *      function.php
+ *      
+ *      Copyright 2011 Indra Sutriadi Pipii <indra.sutriadi@gmail.com>
+ *      
+ *      This program is free software; you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation; either version 2 of the License, or
+ *      (at your option) any later version.
+ *      
+ *      This program is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *      
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program; if not, write to the Free Software
+ *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ *      MA 02110-1301, USA.
  */
 
 	if ( ! defined('SENAYAN_BASE_DIR')) { exit(); }
 	if (!$can_read)
 		die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 
-	function fnColumnToField( $i )
-	{
-		switch ($i)
-		{
-			case 0: return "member_id";
-			case 1: return "member_id";
-			case 2: return "member_name";
-			case 3: return "member_type_name";
-			case 4: return "inst_name";
-			case 5: return "member_email";
-		}
-	}
