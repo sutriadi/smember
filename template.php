@@ -28,19 +28,16 @@ if (!$can_read)
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>SMember Plugin v 0.2</title>
+	<title>SMember Plugin v <?php echo $version;?></title>
 	<style type="text/css" title="currentStyle">
 		@import "./css/demo_page.css";
 		@import "./css/demo_table_jui.css";
-		.ui-button { outline: 0; margin:0; padding: .4em 1em .5em; text-decoration:none;  !important; cursor:pointer; position: relative; text-align: center; }
+		button { outline: 0; margin:0; padding: .4em 1em .5em; text-decoration:none;  !important; cursor:pointer; position: relative; text-align: center; }
 	</style>
 	<script type="text/javascript" language="javascript" src="./js/jquery.min.js"></script>
 	<script type="text/javascript" language="javascript" src="./js/jquery-ui.custom.min.js"></script>
 	<script type="text/javascript" language="javascript" src="./js/jquery.dataTables.js"></script>
 	<script type="text/javascript" charset="utf-8" language="javascript" src="./js/data.js"></script>
-<?php if (isset($jsfiles) && count($jsfiles) != 0): foreach ($jsfiles as $jsfile):?>
-	<script type="text/javascript" language="javascript" src="<?php echo $jsfile;?>"></script>
-<?php endforeach; endif; ?>
 
 </head>
 <body id="dt_example" onload="<?php echo $onload;?>">
@@ -49,7 +46,7 @@ if (!$can_read)
 			<label for="theme"><u>T</u>heme:</label>
 			<?php echo $optstyles;?>
 		</div>
-		<h1>SMember v 0.2</h1>
+		<h1>SMember v <?php echo $version;?></h1>
 		<div id="demo">
 			<form id="formulir" name="formulir" target="" action="" method="POST">
 				<div style="text-align:left; padding-bottom: 1em; float: left;" class="ui-widget">
@@ -60,7 +57,7 @@ if (!$can_read)
 					</select>
 				</div>
 				<div style="text-align:right; padding-bottom:1em;" class="ui-widget">
-					<button type="submit" id="kirim" name="kirim" title="Alt+Shift+S" accesskey="S" class="ui-button ui-state-default ui-corner-all">
+					<button type="submit" id="kirim" name="kirim" title="Alt+Shift+S" accesskey="S" class="ui-button ui-button-text ui-state-default ui-corner-all">
 						<u>S</u>ubmit form
 					</button>
 				</div>
@@ -72,8 +69,11 @@ if (!$can_read)
 				<table cellpadding="0" cellspacing="0" border="0" class="display" id="members">
 					<thead>
 						<tr>
+							<th colspan="6">Members Details</th>
+						</tr>
+						<tr>
 							<th width="4%"></th>
-							<th width="15%">Member ID</th>
+							<th width="15%">ID</th>
 							<th width="20%">Name</th>
 							<th width="10%">Type</th>
 							<th width="30%">Institution</th>
@@ -88,11 +88,11 @@ if (!$can_read)
 					<tfoot>
 						<tr>
 							<th></th>
-							<th>Member ID</th>
-							<th>Name</th>
-							<th>Type</th>
-							<th>Institution</th>
-							<th>Email</th>
+							<th style="padding:0px;"><input value="ID" type="text" class="search_init" style="width: 90px;" /></th>
+							<th style="padding:0px;"><input value="Name" type="text" class="search_init" style="width: 115px;" /></th>
+							<th style="padding:0px;"><input value="Type" type="text" class="search_init" style="width: 60px;" /></th>
+							<th style="padding:0px;"><input value="Institution" type="text" class="search_init" style="width: 200px;" /></th>
+							<th style="padding:0px;"><input value="E-mail" type="text" class="search_init" style="width: 200px;" /></th>
 						</tr>
 					</tfoot>
 				</table>

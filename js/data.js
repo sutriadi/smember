@@ -19,6 +19,7 @@
 
 	/*** jQuery dataTables ***/
 
+	var asInitVals = new Array();
 	var oTable;
 	var oCache = { iCacheLower: -1 };
 
@@ -157,22 +158,16 @@
 
 		$('#tutup').click(function() { window.close() });
 		$('#reload').click(function() { window.location.reload() });
-
-		var btn=new Array('#btn1', '#btn2', '#btn3', '#btn4', '#btn5', '#btn6', '#reload', '#kirim', '#tutup');
-		for(n=0;n<btn.length;n++) {
-			$(btn[n]).hover(
-				function(){ $(this).addClass("ui-state-hover"); },
-				function(){ $(this).removeClass("ui-state-hover"); }
-			).mousedown(function(){ $(this).addClass("ui-state-active"); }
-			).mouseup(function(){ $(this).removeClass("ui-state-active");	}
-			)
-		}
+		
+		$('button').button();
 
 		oTable=$('#members').dataTable( {
 			"bProcessing": true,
 			"bServerSide": true,
 			"bAutoWidth": false,
 			"bJQueryUI": true,
+			"bFilter": true,
+			"aLengthMenu": [[5, 10, 20, 30, 40, 50], [5, 10, 20, 30, 40, 50]],
 			"sPaginationType": "full_numbers",
 			"sAjaxSource": "./php/processing.php",
 			"fnServerData": fnDataTablesPipeline,
@@ -185,7 +180,40 @@
 				null,
 			],
 			"sScrollY": "200px",
+			"oLanguage": {
+				"sSearch": "Search all:"
+			}
 		} );
+
+		$("tfoot input").keyup( function () {
+			/* Filter on the column (the index) of this element */
+			oTable.fnFilter( this.value, $("tfoot input").index(this) );
+		} );
+		
+		/*
+		 * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
+		 * the footer
+		 */
+		$("tfoot input").each( function (i) {
+			asInitVals[i] = this.value;
+		} );
+		
+		$("tfoot input").focus( function () {
+			if ( this.className == "search_init" )
+			{
+				this.className = "";
+				this.value = "";
+			}
+		} );
+		
+		$("tfoot input").blur( function (i) {
+			if ( this.value == "" )
+			{
+				this.className = "search_init";
+				this.value = asInitVals[$("tfoot input").index(this)];
+			}
+		} );
+
 	} );
 
 	/*** theme function ***/

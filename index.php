@@ -22,9 +22,6 @@
 
 if (!defined('SENAYAN_BASE_DIR')) {
     require '../../../../sysconfig.inc.php';
-/*
-    require '../slims/sysconfig.inc.php';
-*/
     require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
 }
 
@@ -44,11 +41,10 @@ checkip($conf);
 checken();
 checkref();
 
+$version = '0.3';
 $dirmods = "./mods";
 $files = scandir($dirmods);
 sort($files);
-//~ $jsfiles = array();
-//~ $cssfiles = array();
 $options = array();
 foreach ($files as $file)
 {
