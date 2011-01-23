@@ -20,5 +20,10 @@ Indra Sutriadi Pipii (indra@sutriadi.web.id)
 - masuk ke menu Plugins
 - klik link Launch pada baris plugin aktif bernama SMember
 
--- CHANGELOG
-(23.01.2011) use jquery 1.4.4 and jquery-ui 1.8.9
+CHANGELOG
+23.01.2011
+- upgrade jquery 1.4.4 and jquery-ui 1.8.9
+- menambahkan ./css/custom.css bagi yang ingin membuat stylesheet sendiri
+- filter member per kolom
+- jumlah item per halaman lebih kecil untuk mengurangi penggunaan resource berlebih
+  saat eksekusi perintah
