@@ -9,9 +9,6 @@
 
 if (!defined('SENAYAN_BASE_DIR')) {
 	require '../../../../../sysconfig.inc.php';
-/*
-	require '../../slims/sysconfig.inc.php';
-*/
 	require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
 }
 require SENAYAN_BASE_DIR.'admin/default/session_check.inc.php';
