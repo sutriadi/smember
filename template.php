@@ -35,8 +35,8 @@ if (!$can_read)
 		.ui-button { outline: 0; margin:0; padding: .4em 1em .5em; text-decoration:none;  !important; cursor:pointer; position: relative; text-align: center; }
 	</style>
 	<script type="text/javascript" language="javascript" src="./js/jquery.min.js"></script>
-	<script type="text/javascript" language="javascript" src="./js/jquery.dataTables.js"></script>
 	<script type="text/javascript" language="javascript" src="./js/jquery-ui.custom.min.js"></script>
+	<script type="text/javascript" language="javascript" src="./js/jquery.dataTables.js"></script>
 	<script type="text/javascript" charset="utf-8" language="javascript" src="./js/data.js"></script>
 <?php if (isset($jsfiles) && count($jsfiles) != 0): foreach ($jsfiles as $jsfile):?>
 	<script type="text/javascript" language="javascript" src="<?php echo $jsfile;?>"></script>

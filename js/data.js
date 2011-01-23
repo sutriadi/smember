@@ -197,7 +197,7 @@
 		if(fileadded.length!=0)
 			remove()
 		if(fileadded!=css){
-			var filename=dir+css+"/jquery-ui-1.7.2.custom.css"
+			var filename=dir+css+"/jquery-ui-1.8.9.custom.css"
 			var fileref=document.createElement("link")
 			fileref.setAttribute("rel", "stylesheet")
 			fileref.setAttribute("type", "text/css")
