@@ -34,14 +34,14 @@ if (!$can_read && !$can_write) {
 	die('<div>You dont have enough privileges to view this section</div>');
 }
 
-include('../conf.php');
+$conf = $_SESSION['plugins_conf'];
 include('../func.php');
 
-checkip($conf);
+checkip();
 checken();
 checkref();
 
-$version = '0.3';
+$version = '0.4';
 $dirmods = "./mods";
 $files = scandir($dirmods);
 sort($files);
