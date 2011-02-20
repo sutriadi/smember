@@ -72,11 +72,10 @@ foreach ($options as $option)
 	$opt .= "<option value=\"chform('{$option['target']}', '{$option['action']}')\">{$option['text']}</option>";
 $option = $opt;
 
-require('./conf/plugin.conf.php');
-
 $cssdir = "./css/ui-themes/";
 $styles = scandir($cssdir);
 sort($styles);
+$defstyle = variable_get('smember_defstyle', 'default');
 $optstyle = '';
 foreach ($styles as $style)
 {
