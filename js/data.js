@@ -134,32 +134,68 @@
 			var df=document.formulir.dofirst
 			if (df.selectedIndex!=0) {
 				$("#validateTips").text("Yakin akan melakukan "+df.options[df.selectedIndex].text).effect("highlight", {}, 1500);
+				$('#dialog').dialog("option", "buttons", {
+					OK: function() {
+						var sData = $('input', oTable.fnGetNodes()).serialize();
+						document.formulir.submit();
+						document.formulir.dofirst.selectedIndex=0;
+						chform('', '');
+						$(this).dialog('close');
+					},
+					Cancel: function() {
+						$(this).dialog('close');
+					},
+				}),
 				$('#dialog').dialog('open');
 			}
 			return false;
 		} );
-		$("#dialog").dialog({
+		$("#card_conf_accordion, #cert_conf_accordion").accordion({
+			autoHeight: false,
+			collapsible: true,
+			header: "h3"
+		});
+		var dialog_conf = {
 			bgiframe: true,
 			autoOpen: false,
 			modal: true,
+		}
+		var card_conf = {
+			height: "400",
+			width: "600",
 			buttons: {
-				OK: function() {
-					var sData = $('input', oTable.fnGetNodes()).serialize();
-					document.formulir.submit();
-					document.formulir.dofirst.selectedIndex=0;
-					chform('', '');
+				"Save": function() {
+					$.post(
+						"./php/setup.php?conf=card",
+						$('form[name="card_conf_form"]').serializeArray(),
+						function(data){
+							if(data.track=="sukses")
+								$("#validateTips").text("Data sudah disimpan!").effect("highlight", {}, 1500);
+							else
+								$("#validateTips").text("Data gagal disimpan!").effect("highlight", {}, 1500);
+							$('#dialog').dialog("option", "buttons", {"OK": function() { $(this).dialog("close"); } } );
+							$('#dialog').dialog('open');
+						},
+						"json"
+					);
 					$(this).dialog('close');
 				},
 				Cancel: function() {
 					$(this).dialog('close');
-				},
+				}
 			},
-		});
+		}
+		$.extend(true, card_conf, dialog_conf);
+		$("#card_conf").dialog(eval(card_conf));
+		$("#dialog").dialog(eval(dialog_conf));
 
 		$('#tutup').click(function() { window.close() });
 		$('#reload').click(function() { window.location.reload() });
 		
 		$('button').button();
+		$('#to-conf-card').button().click(function() {
+			$('#card_conf').dialog("open");
+		});
 
 		oTable=$('#members').dataTable( {
 			"bProcessing": true,
