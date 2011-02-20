@@ -104,5 +104,5 @@ $cardconf['isiganda'] = "<p><strong>Peraturan Perpustakaan</strong></p>"
 		."<li>Perpanjangan peminjaman koleksi harus dengan bukti-bukti yang sah</li>"
 	."</ul>";
 
-variable_set('smember_defstyle', 'sunny');
+variable_set('smember_defstyle', 'default');
 variable_set('smember_card_conf', json_encode($cardconf, JSON_FORCE_OBJECT));
