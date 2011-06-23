@@ -105,4 +105,4 @@ $cardconf['isiganda'] = "<p><strong>Peraturan Perpustakaan</strong></p>"
 	."</ul>";
 
 variable_set('smember_defstyle', 'default');
-variable_set('smember_card_conf', json_encode($cardconf, JSON_FORCE_OBJECT));
+variable_set('smember_card_conf', $cardconf, 'json');
