@@ -411,4 +411,3 @@ function barcode_print($code, $encoding="ANY", $scale = 2 ,$mode = "png" ){
     return $bars;
 }
 
-?>
