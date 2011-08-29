@@ -59,11 +59,11 @@ if (isset($_GET) && isset($_GET['conf']))
 			$cardconf['stempel_ganda'] = isset($cardconf['stempel_ganda']) ? true : false;
 			$cardconf['kop_ganda'] = isset($cardconf['kop_ganda']) ? true : false;
 			
-			variable_set('smember_card_conf', $cardconf, 'json');
-			echo json_encode(array('track' => 'sukses'));
+			variable_set('smember_card_conf', json_encode($cardconf, JSON_FORCE_OBJECT));
+			echo json_encode(array('track' => 'sukses'), JSON_FORCE_OBJECT);
 		}
 		else
-			echo json_encode(array('track' => 'gagal'));
+			echo json_encode(array('track' => 'gagal'), JSON_FORCE_OBJECT);
 	}
 	else if ($toconf == 'cert')
 	{

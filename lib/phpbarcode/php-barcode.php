@@ -1,4 +1,4 @@
-<?
+<?php
 /*
  * PHP-Barcode 0.3pl1
  
@@ -411,3 +411,4 @@ function barcode_print($code, $encoding="ANY", $scale = 2 ,$mode = "png" ){
     return $bars;
 }
 
+?>

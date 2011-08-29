@@ -9,7 +9,7 @@
 $info = array(
 	'name' => 'SMember',
 	'author' => 'Indra Sutriadi Pipii',
-	'version' => '0.4 build 08172620022011',
+	'version' => '0.5.15.1 build 14323528082011',
 	'description' => 'SMember menyediakan fungsionalitas tambahan berupa '
 		.'kartu member perpustakaan.',
 	'type' => 2, // 0 = none (default), 1 = sibling, 2 = new window

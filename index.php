@@ -20,8 +20,10 @@
  *      MA 02110-1301, USA.
  */
 
+define('INDEX_AUTH', '1');
+
 if (!defined('SENAYAN_BASE_DIR')) {
-    require '../../../../sysconfig.inc.php';
+    require '../../../../../sysconfig.inc.php';
     require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
 }
 
@@ -35,13 +37,13 @@ if (!$can_read && !$can_write) {
 }
 
 $conf = $_SESSION['plugins_conf'];
-include('../func.php');
+include('../../func.php');
 
 checkip();
 checken();
 checkref();
 
-$version = '0.4';
+$version = variable_get('smember_version', 'beta');
 $dirmods = "./mods";
 $files = scandir($dirmods);
 sort($files);
@@ -71,22 +73,6 @@ $opt = '';
 foreach ($options as $option)
 	$opt .= "<option value=\"chform('{$option['target']}', '{$option['action']}')\">{$option['text']}</option>";
 $option = $opt;
-
-$cssdir = "./css/ui-themes/";
-$styles = scandir($cssdir);
-sort($styles);
-$defstyle = variable_get('smember_defstyle', 'default');
-$optstyle = '';
-foreach ($styles as $style)
-{
-	$selected = $style == $defstyle ? 'selected' : '';
-	if ($style != "." AND $style != ".." AND is_dir($cssdir . "/" . $style))
-		$optstyle .= "<option $selected value=\"$style\">$style</option>";
-}
-$optstyles = "<select id=\"theme\" accesskey=\"T\" class=\"ui-state-default ui-corner-all\" onchange=\"reload(this.value, '$cssdir')\">"
-		. $optstyle
-	. "</select>";
-$onload = "reload('$defstyle', '$cssdir');";
 
 include('./template.php');
 

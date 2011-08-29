@@ -32,24 +32,21 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>SMember Plugin v <?php echo $version;?></title>
 	<style type="text/css" title="currentStyle">
-		@import "./css/demo_page.css";
-		@import "./css/demo_table_jui.css";
-		@import "./css/smember.css";
+		@import "../../library/dataTables/css/demo_page.css";
+		@import "../../library/dataTables/css/demo_table_jui.css";
+		@import "../../<?php echo css_get();?>";
+		@import "./css/s.css";
 		@import "./css/custom.css";
 	</style>
-	<script type="text/javascript" language="javascript" src="./js/jquery.min.js"></script>
-	<script type="text/javascript" language="javascript" src="./js/jquery-ui.custom.min.js"></script>
-	<script type="text/javascript" language="javascript" src="./js/jquery.dataTables.js"></script>
-	<script type="text/javascript" charset="utf-8" language="javascript" src="./js/data.js"></script>
+	<script type="text/javascript" language="javascript" src="../../library/js/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../../library/ui/js/jquery-ui.custom.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../../library/dataTables/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf-8" language="javascript" src="./js/s.js"></script>
 	<script type="text/javascript" charset="utf-8" language="javascript" src="./js/custom.js"></script>
 
 </head>
-<body id="dt_example" onload="<?php echo $onload;?>">
+<body id="dt_example">
 	<div id="container">
-		<div style="float:right;">
-			<label for="theme"><u>T</u>heme:</label>
-			<?php echo $optstyles;?>
-		</div>
 		<h1>SMember v <?php echo $version;?></h1>
 		<div id="demo">
 			<form id="formulir" name="formulir" target="" action="" method="POST">

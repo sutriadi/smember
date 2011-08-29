@@ -1,27 +1,30 @@
 SMember Plugin for SLiMS
-version 0.4 build 08172620022011
+version 0.5.15.1.2 build 14323528082011
 
 Copyright (c) 1432 H / 2011 M
 Indra Sutriadi Pipii (indra@sutriadi.web.id)
 
 -- Persyaratan System
-- SLiMS 3 Stable 14 "Seulanga"
-- Modul Plugins aktif versi 0.3 patch 1 (download di http://sutriadi.web.id/)
+- SLiMS 3 Stable 15 "Matoa"
+- Modul Plugins aktif versi 15.1.2 "Bongkai" (download di http://sutriadi.web.id/)
 
 -- Instalasi
-- uraikan paket instalasi smember-x.x.tar.gz di dalam direktori ./admin/modules/plugins/
-  sehingga akan menghasilkan direktori ./admin/modules/plugins/smember/
+- uraikan paket instalasi smember-x.x.tar.gz di dalam direktori ./admin/modules/plugins/include/
+  sehingga akan menghasilkan direktori ./admin/modules/plugins/includes/smember/
 - masuk ke menu Plugins, kemudian aktifkan plugin SMember
 
 -- Hapus Instalasi
 - masuk ke menu Plugins, kemudian non-aktifkan plugin SMember
-- hapus direktori smember dari direktori ./admin/modules/plugins/ bila perlu
+- hapus direktori smember dari direktori ./admin/modules/plugins/include/ bila perlu
 
 -- Menjalankan Plugin
 - masuk ke menu Plugins
 - klik link Launch pada baris plugin aktif bernama SMember
 
 CHANGELOG
+27.08.2011
+- penyesuaian plugin dengan ketentuan modul Plugins versi 15.1.2
+
 20.02.2011
 - penambahan fitur instalasi dan deinstalasi sesuai modul Plugins versi 0.3
 - penambahan dialog konfigurasi plugin
