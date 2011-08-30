@@ -25,12 +25,110 @@ if (!$can_read)
 	die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 
 $card_conf = json_decode(variable_get('smember_card_conf'));
+
+$base_cols_name = base_cols_name('member');
+$fcols = cols_get('smember');
+$order_cols = cols_order_get('smember');
+
+if (count($order_cols) > 0)
+{
+	$columns = array();
+	foreach ($order_cols as $key => $val)
+	{
+		if (array_key_exists($key, $base_cols_name))
+		{
+			$col_arrs = array(
+				'label' => $base_cols_name[$key],
+				'name' => $key,
+			);
+			if (isset($columns[$val]))
+			{
+				$columns[$val+1] = $col_arrs;
+			}
+			else
+				$columns[$val] = $col_arrs;
+			unset($col_arrs);
+		}
+	}
+	
+	if (isset($columns) AND is_array($columns))
+	{
+		ksort($columns);
+		$num_cols = count($columns);
+		$thead = '<thead><tr><th colspan="%d">' . __('Members Details') . '</th></tr><tr>';
+		$tbody = '<tbody><tr><td colspan="%d" class="dataTables_empty">' . __('Loading data from server') . '</td></tr></tbody>';
+		$tfoot = '<tfoot><tr>';
+		$php_js = 'var phpDef = { %s };';
+		$js_def = array();
+		$js_def['aoColumnDefs'] = array();
+		if (in_array($fcols[0], array('radio', 'checkbox')))
+		{
+			$num_cols++;
+			$thead .= '<th></th>';
+			$tfoot .= '<th></th>';
+			$js_def['aoColumnDefs'][] = ' { "bSortable": false, "aTargets": [ 0 ] } ';
+			$js_def['aoColumnDefs'][] = ' { "sClass": "center", "aTargets": [ 0 ] } ';
+		}
+
+		foreach ($columns as $key => $arr)
+		{
+			$thead .= '<th>' . $arr['label'] . '</th>';
+			$tfoot .= '<th style="padding:0px;"><input value="' . $arr['label'] . '" type="text" class="search_init" /></th>';
+			
+		}
+		if ( ! empty($fcols[2]))
+		{
+			$end_cols = explode(chr(10), $fcols[2]);
+			$i_col = $num_cols;
+			$num_cols += count($end_cols);
+			foreach ($end_cols as $val)
+			{
+				$label = '';
+				$content = $val;
+				$del = explode(":", $val);
+				if (count($del) > 1)
+				{
+					$label = $del[0];
+				}
+				$thead .= sprintf('<th>%s</th>', $label);
+				$tfoot .= '<th></th>';
+				$js_def['aoColumnDefs'][] = sprintf(' { "bSortable": false, "aTargets": [ %d ] } ', $i_col);
+				$i_col ++;
+			}
+		}
+		
+		$thead .= '</tr></thead>';
+		$tfoot .= '</tr></tfoot>';
+		$thead = sprintf($thead, $num_cols);
+		$tbody = sprintf($tbody, $num_cols);
+		$tfoot = sprintf($tfoot, $num_cols);
+
+		if (count($js_def > 0))
+		{
+			$v_arr = array();
+			foreach ($js_def as $key => $val)
+			{
+				if (is_array($val) AND count($val) > 0)
+				{
+					$v_arr[$key] = sprintf(' "%s": [ %s ] ',
+						$key,
+						implode(', ', $val)
+					);
+				}
+			}
+			
+			$v_str = implode(', ', $v_arr);
+			$php_js = sprintf($php_js, $v_str);
+		}
+	}
+}
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>SMember Plugin v <?php echo $version;?></title>
+	<title>SMember Plugin <?php echo $version;?></title>
 	<style type="text/css" title="currentStyle">
 		@import "../../library/dataTables/css/demo_page.css";
 		@import "../../library/dataTables/css/demo_table_jui.css";
@@ -38,6 +136,9 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 		@import "./css/s.css";
 		@import "./css/custom.css";
 	</style>
+	<script type="text/javascript">
+		<?php if (isset($php_js)) echo $php_js;?>
+	</script>
 	<script type="text/javascript" language="javascript" src="../../library/js/jquery.min.js"></script>
 	<script type="text/javascript" language="javascript" src="../../library/ui/js/jquery-ui.custom.min.js"></script>
 	<script type="text/javascript" language="javascript" src="../../library/dataTables/js/jquery.dataTables.js"></script>
@@ -47,30 +148,35 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 </head>
 <body id="dt_example">
 	<div id="container">
-		<h1>SMember v <?php echo $version;?></h1>
+		<h1>SMember <?php echo $version;?></h1>
 		<div id="demo">
+		<!--
+		<input type="button" id="ngetes" value="TEST" />
+		-->
 			<form id="formulir" name="formulir" target="" action="" method="POST">
 				<div style="text-align:left; padding-bottom: 1em; float: left;" class="ui-widget">
-					<label for="dofirst"><u>G</u>o:</label>
+					<label for="dofirst"><?php echo __('<u>G</u>o');?>:</label>
 					<select id="dofirst" name="dofirst" accesskey="G" onchange="eval(this.value);" class="ui-state-default ui-corner-all">
-						<option>-- Mau diapakan? --</option>
+						<option><?php echo __('What to do?');?></option>
 						<?php echo $option;?>
 					</select>
 				</div>
 				<div style="text-align:right; padding-bottom:1em;" class="ui-widget">
-					<button type="button" id="to-conf-card" title="Alt+Shift+K" accesskey="K">
-						Setup <u>K</u>artu
+					<button type="button" id="to-conf-card" title="Alt+Shift+C" accesskey="C">
+						<?php echo __('<u>C</u>ard Setup');?>
 					</button>
 					<button type="submit" id="kirim" name="kirim" title="Alt+Shift+S" accesskey="S" class="ui-button ui-button-text ui-state-default ui-corner-all">
-						<u>S</u>ubmit form
+						<?php echo __('<u>S</u>ubmit form');?>
 					</button>
 				</div>
 				<div style="margin: 5px 0px;" width="100%">
-					<button type="button" onclick="allcheck(this);" id="btn1" accesskey="A" title="Alt+Shift+A" class="ui-button ui-state-default ui-corner-all">Check <u>A</u>ll</button>
-					<button type="button" onclick="alluncheck(this);" id="btn2" accesskey="U" title="Alt+Shift+U" class="ui-button ui-state-default ui-corner-all"><u>U</u>ncheck All</button>
-					<button type="button" onclick="invertcheck(this);" id="btn3" accesskey="I" title="Alt+Shift+I" class="ui-button ui-state-default ui-corner-all">Check <u>I</u>nvert</button>
+					<button type="button" onclick="allcheck(this);" id="btn1" accesskey="A" title="Alt+Shift+A" class="ui-button ui-state-default ui-corner-all"><?php echo __('Check <u>A</u>ll');?></button>
+					<button type="button" onclick="alluncheck(this);" id="btn2" accesskey="U" title="Alt+Shift+U" class="ui-button ui-state-default ui-corner-all"><?php echo __('<u>U</u>ncheck All');?></button>
+					<button type="button" onclick="invertcheck(this);" id="btn3" accesskey="I" title="Alt+Shift+I" class="ui-button ui-state-default ui-corner-all"><?php echo __('Check <u>I</u>nvert');?></button>
 				</div>
 				<table cellpadding="0" cellspacing="0" border="0" class="display" id="members">
+					<?php echo $thead;?>
+					<!--
 					<thead>
 						<tr>
 							<th colspan="6">Members Details</th>
@@ -84,11 +190,17 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 							<th>Email</th>
 						</tr>
 					</thead>
+					-->
+					<?php echo $tbody;?>
+					<!--
 					<tbody>
 						<tr>
 							<td colspan="5" class="dataTables_empty">Loading data from server</td>
 						</tr>
 					</tbody>
+					-->
+					<?php echo $tfoot;?>
+					<!--
 					<tfoot>
 						<tr>
 							<th></th>
@@ -99,23 +211,24 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 							<th style="padding:0px;"><input value="E-mail" type="text" class="search_init" style="width: 200px;" /></th>
 						</tr>
 					</tfoot>
+					-->
 				</table>
 				<div style="margin: 5px 0px;" width="100%">
-					<button type="button" onclick="allcheck(this);" id="btn4" accesskey="A" title="Alt+Shift+A" class="ui-button ui-state-default ui-corner-all">Check <u>A</u>ll</button>
-					<button type="button" onclick="alluncheck(this);" id="btn5" accesskey="U" title="Alt+Shift+U" class="ui-button ui-state-default ui-corner-all"><u>U</u>ncheck All</button>
-					<button type="button" onclick="invertcheck(this);" id="btn6" accesskey="I" title="Alt+Shift+I" class="ui-button ui-state-default ui-corner-all">Check <u>I</u>nvert</button>
+					<button type="button" onclick="allcheck(this);" id="btn4" accesskey="A" title="Alt+Shift+A" class="ui-button ui-state-default ui-corner-all"><?php echo __('Check <u>A</u>ll');?></button>
+					<button type="button" onclick="alluncheck(this);" id="btn5" accesskey="U" title="Alt+Shift+U" class="ui-button ui-state-default ui-corner-all"><?php echo __('<u>U</u>ncheck All');?></button>
+					<button type="button" onclick="invertcheck(this);" id="btn6" accesskey="I" title="Alt+Shift+I" class="ui-button ui-state-default ui-corner-all"><?php echo __('Check <u>I</u>nvert');?></button>
 				</div>
 			</form>
 		</div>
 		<div class="spacer"></div>
 		<div style="text-align:left; padding-bottom:1em; float: left;" class="ui-widget">
 			<button type="button" id="reload" accesskey="R" title="Alt+Shift+R" class="ui-button ui-state-default ui-corner-all">
-				<u>R</u>eload
+				<?php echo __('<u>R</u>eload');?>
 			</button>
 		</div>
 		<div style="text-align:right; padding-bottom:1em;" class="ui-widget">
 			<button type="button" id="tutup" accesskey="X" title="Alt+Shift+X" class="ui-button ui-state-default ui-corner-all">
-				E<u>x</u>it
+				<?php echo __('E<u>x</u>it');?>
 			</button>
 		</div>
 		<address style="text-align: center;">
@@ -123,7 +236,7 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 			Build with jQuery-UI + dataTables plugin.
 		</address>
 	</div>
-	<div id="dialog" title="Information">
+	<div id="dialog" title="<?php echo __('Information');?>">
 		<p id="validateTips"></p>
 	</div>
 
@@ -182,108 +295,108 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 	$checked_stempel_ganda = (isset($card_conf->stempel_ganda) && $card_conf->stempel_ganda == true) ? "checked" : "";
 ?>
 
-	<div id="card_conf" title="Member Card Configuration">
+	<div id="card_conf" title="<?php echo __('Member Card Configuration');?>">
 		<form name="card_conf_form">
 			<fieldset>
 				<div id="card_conf_accordion">
 					<div>
-						<h3><a href="#">Kartu</a></h3>
+						<h3><a href="#"><?php echo __('Card');?></a></h3>
 						<div>
 							<p>
-								<label for="lebar" class="lshort">Lebar:</label>
+								<label for="lebar" class="lshort"><?php echo __('Width');?>:</label>
 								<input id="lebar" name="lebar" maxlength="4" size="4" type="text" value="<?php echo isset($card_conf->lebar) ? $card_conf->lebar : '8.8';?>" />
 								cm
 							</p>
 							<p>
-								<label for="tinggi" class="lshort">Tinggi:</label>
+								<label for="tinggi" class="lshort"><?php echo __('Height');?>:</label>
 								<input id="tinggi" name="tinggi" maxlength="4" size="4" type="text" value="<?php echo isset($card_conf->tinggi) ? $card_conf->tinggi : '8.8';?>" />
 								cm
 							</p>
 							<p>
-								<label for="gaya" class="lshort">Tema:</label>
+								<label for="gaya" class="lshort"><?php echo __('Theme');?>:</label>
 								<input id="gaya" name="gaya" value="<?php echo isset($card_conf->gaya) ? $card_conf->gaya : 'default';?>" />
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Halaman</a></h3>
+						<h3><a href="#"><?php echo __('Page');?></a></h3>
 						<div>
 							<p>
-								<label for="perhal" class="llong">Jumlah Kartu per Halaman:</label>
+								<label for="perhal" class="llong"><?php echo __('Number of cards per page');?>:</label>
 								<select id="perhal" name="perhal">
 									<?php echo $options_perhal; ?>
 								</select>
 							</p>
 							<p>
-								<label for="kop" class="llong">Tampilkan kop?</label>
-								<input id="kop" type="checkbox" name="kop" <?php echo $checked_kop;?> /> <span>Ya!</span>
+								<label for="kop" class="llong"><?php echo __('Display header?');?></label>
+								<input id="kop" type="checkbox" name="kop" <?php echo $checked_kop;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="logo" class="llong">Tampilkan logo?</label>
-								<input id="logo" type="checkbox" name="logo" <?php echo $checked_logo;?> /> <span>Ya!</span>
+								<label for="logo" class="llong"><?php echo __('Display logo?');?></label>
+								<input id="logo" type="checkbox" name="logo" <?php echo $checked_logo;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="stempel" class="llong">Tampilkan stempel?</label>
-								<input id="stempel" type="checkbox" name="stempel" <?php echo $checked_stempel;?> /> <span>Ya!</span>
+								<label for="stempel" class="llong"><?php echo __('Display stamp?');?></label>
+								<input id="stempel" type="checkbox" name="stempel" <?php echo $checked_stempel;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="pasfoto" class="llong">Tampilkan pasfoto?</label>
-								<input id="pasfoto" type="checkbox" name="pasfoto" <?php echo $checked_pasfoto;?> /> <span>Ya!</span>
+								<label for="pasfoto" class="llong"><?php echo __('Display photo?');?></label>
+								<input id="pasfoto" type="checkbox" name="pasfoto" <?php echo $checked_pasfoto;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="kodebar" class="llong">Tampilkan barcode?</label>
-								<input id="kodebar" type="checkbox" name="kodebar" <?php echo $checked_kodebar;?> /> <span>Ya!</span>
+								<label for="kodebar" class="llong"><?php echo __('Display barcode?');?></label>
+								<input id="kodebar" type="checkbox" name="kodebar" <?php echo $checked_kodebar;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="ganda" class="llong">Tampilkan sisi belakang?</label>
-								<input id="ganda" type="checkbox" name="ganda" <?php echo $checked_ganda;?> /> <span>Ya!</span>
+								<label for="ganda" class="llong"><?php echo __('Display backside?');?></label>
+								<input id="ganda" type="checkbox" name="ganda" <?php echo $checked_ganda;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Pas Foto</a></h3>
+						<h3><a href="#"><?php echo __('Photo');?></a></h3>
 						<div>
 							<p>
-								<label for="pasfoto_lebar" class="lshort">Lebar:</label>
+								<label for="pasfoto_lebar" class="lshort"><?php echo __('Width');?>:</label>
 								<input id="pasfoto_lebar" name="pasfoto_lebar" maxlength="4" size="4" type="text" value="<?php echo isset($card_conf->pasfoto_lebar) ? $card_conf->pasfoto_lebar : '8.8';?>" />
 								cm
 							</p>
 							<p>
-								<label for="tinggi" class="lshort">Tinggi:</label>
+								<label for="tinggi" class="lshort"><?php echo __('Height');?>:</label>
 								<input id="tinggi" name="pasfoto_tinggi" maxlength="4" size="4" type="text" value="<?php echo isset($card_conf->pasfoto_tinggi) ? $card_conf->pasfoto_tinggi : '8.8';?>" />
 								cm
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Kop</a></h3>
+						<h3><a href="#"><?php echo __('Header');?></a></h3>
 						<div>
 							<p>
-								<label for="nama_perpustakaan" class="llong">Nama Perpustakaan:</label>
+								<label for="nama_perpustakaan" class="llong"><?php echo __('Library Name');?>:</label>
 								<input id="nama_perpustakaan" name="nama_perpustakaan" type="text" value="<?php echo isset($card_conf->nama_perpustakaan) ? $card_conf->nama_perpustakaan : '';?>" />
 							</p>
 							<p>
-								<label for="alamat_perpustakaan" class="llong">Alamat Perpustakaan:</label>
+								<label for="alamat_perpustakaan" class="llong"><?php echo __('Address');?>:</label>
 								<input id="alamat_perpustakaan" name="alamat_perpustakaan" type="text" value="<?php echo isset($card_conf->alamat_perpustakaan) ? $card_conf->alamat_perpustakaan : '';?>" />
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Logo</a></h3>
+						<h3><a href="#"><?php echo __('Logo');?></a></h3>
 						<div>
 							<p>
-								<label for="path_logo" class="lmid">Berkas Logo:</label>
+								<label for="path_logo" class="lmid"><?php echo __('Filename');?>:</label>
 								<input type="path_logo" name="path_logo" type="text" value="<?php echo isset($card_conf->path_logo) ? $card_conf->path_logo : '';?>" />
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Barcode</a></h3>
+						<h3><a href="#"><?php echo __('Barcode');?></a></h3>
 						<div>
 							<p>
-								<label for="encbar" class="lmid">Encoding:</label>
+								<label for="encbar" class="lmid"><?php echo __('Encoding');?>:</label>
 								<select name="encbar">
-									<option>-- Pilih --</option>
+									<option><?php echo __('-- Select --');?></option>
 									<?php echo $options_encoding; ?>
 								</select>
 							</p>
@@ -291,78 +404,78 @@ $card_conf = json_decode(variable_get('smember_card_conf'));
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Stempel</a></h3>
+						<h3><a href="#"><?php echo __('Stamp');?></a></h3>
 						<div>
 							<p>
-								<label for="lokasi_stempel" class="llong">Lokasi:</label>
+								<label for="lokasi_stempel" class="llong"><?php echo __('Locate');?>:</label>
 								<input id="lokasi_stempel" name="lokasi_stempel" type="text" value="<?php echo isset($card_conf->lokasi_stempel) ? $card_conf->lokasi_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="pejabat_stempel" class="llong">Nama Pejabat:</label>
+								<label for="pejabat_stempel" class="llong"><?php echo __('Official Name');?>:</label>
 								<input id="pejabat_stempel" name="pejabat_stempel" type="text" value="<?php echo isset($card_conf->pejabat_stempel) ? $card_conf->pejabat_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="nip_prefix_stempel" class="llong">NIP. Prefix:</label>
+								<label for="nip_prefix_stempel" class="llong"><?php echo __('NIP. Prefix');?>:</label>
 								<input id="nip_prefix_stempel" name="nip_prefix_stempel" type="text" value="<?php echo isset($card_conf->nip_prefix_stempel) ? $card_conf->nip_prefix_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="nip_pejabat_stempel" class="llong">Angka NIP:</label>
+								<label for="nip_pejabat_stempel" class="llong"><?php echo __('Number of NIP');?>:</label>
 								<input id="nip_pejabat_stempel" name="nip_pejabat_stempel" type="text" value="<?php echo isset($card_conf->nip_pejabat_stempel) ? $card_conf->nip_pejabat_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="jabatan_stempel" class="llong">Jabatan:</label>
+								<label for="jabatan_stempel" class="llong"><?php echo __('Position');?>:</label>
 								<input id="jabatan_stempel" name="jabatan_stempel" type="text" value="<?php echo isset($card_conf->jabatan_stempel) ? $card_conf->jabatan_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="gambar_stempel" class="llong">Tampilkan cap?</label>
-								<input id="gambar_stempel" name="gambar_stempel" type="checkbox" <?php echo $checked_gambar_stempel;?> /> <span>Ya!</span>
+								<label for="gambar_stempel" class="llong"><?php echo __('Display stamp image?');?></label>
+								<input id="gambar_stempel" name="gambar_stempel" type="checkbox" <?php echo $checked_gambar_stempel;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="path_stempel" class="llong">Berkas Cap:</label>
+								<label for="path_stempel" class="llong"><?php echo __('Stamp filename');?>:</label>
 								<input id="path_stempel" name="path_stempel" type="text" value="<?php echo isset($card_conf->path_stempel) ? $card_conf->path_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="tanggal_stempel" class="llong">Tanggal:</label>
+								<label for="tanggal_stempel" class="llong"><?php echo __('Date');?>:</label>
 								<input id="tanggal_stempel" name="tanggal_stempel" type="text" value="<?php echo isset($card_conf->tanggal_stempel) ? $card_conf->tanggal_stempel : '';?>" />
 							</p>
 							<p>
-								<label for="tanggal_fungsi" class="llong">Fungsi Tanggal:</label>
+								<label for="tanggal_fungsi" class="llong"><?php echo __('Date function');?>:</label>
 								<select id="tanggal_fungsi" name="tanggal_fungsi">
-									<option>-- Pilih --</option>
+									<option><?php echo __('-- Select --');?></option>
 									<?php echo $options_date_function; ?>
 								</select>
-								<br /><span><em>Pilihan Dynamic berarti menggunakan fungsi date() PHP</em></span>
+								<br /><span><em><?php echo __('Dynamic option mean will used date() function of PHP');?></em></span>
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Baris</a></h3>
+						<h3><a href="#"><?php echo __('Fields');?></a></h3>
 						<div>
 							<p>
-								<label for="fields" class="lshort">Pilih:</label>
+								<label for="fields" class="lshort"><?php echo __('Select');?>:</label>
 								<select multiple id="fields" name="fields[]"><?php echo $options_fields;?></select>
-								<br /><span><em>Tahan [Ctrl] untuk memilih lebih dari satu</em></span>
+								<br /><span><em><?php echo __('Hold Ctrl key for multiple check.');?></em></span>
 							</p>
 						</div>
 					</div>
 					<div>
-						<h3><a href="#">Bagian Belakang</a></h3>
+						<h3><a href="#"><?php echo __('Backside');?></a></h3>
 						<div>
 							<p>
-								<label for="isiganda" class="lblock">Isi:</label>
+								<label for="isiganda" class="lblock"><?php echo __('Body');?></label>
 								<textarea id="isiganda" cols="50" rows="6" name="isiganda"><?php echo isset($card_conf->isiganda)? $card_conf->isiganda : '';?></textarea>
 							</p>
 							<p>
-								<label for="logo_ganda" class="llong">Tampilkan logo?</label>
-								<input id="logo_ganda" type="checkbox" name="logo_ganda" <?php echo $checked_logo_ganda;?> /> <span>Ya!</span>
+								<label for="logo_ganda" class="llong"><?php echo __('Display logo?');?></label>
+								<input id="logo_ganda" type="checkbox" name="logo_ganda" <?php echo $checked_logo_ganda;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="kop_ganda" class="llong">Tampilkan kop?</label>
-								<input id="kop_ganda" type="checkbox" name="kop_ganda" <?php echo $checked_kop_ganda;?> /> <span>Ya!</span>
+								<label for="kop_ganda" class="llong"><?php echo __('Display header?');?></label>
+								<input id="kop_ganda" type="checkbox" name="kop_ganda" <?php echo $checked_kop_ganda;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 							<p>
-								<label for="stempel_ganda" class="llong">Tampilkan stempel?</label>
-								<input id="stempel_ganda" type="checkbox" name="stempel_ganda" <?php echo $checked_stempel_ganda;?> /> <span>Ya!</span>
+								<label for="stempel_ganda" class="llong"><?php echo __('Display stamp?');?></label>
+								<input id="stempel_ganda" type="checkbox" name="stempel_ganda" <?php echo $checked_stempel_ganda;?> /> <span><?php echo __('Yes!');?></span>
 							</p>
 						</div>
 					</div>

@@ -38,12 +38,15 @@ if (!$can_read && !$can_write) {
 
 $conf = $_SESSION['plugins_conf'];
 include('../../func.php');
+include('../../s_datatables/func.php');
 
 checkip();
 checken();
 checkref();
 
-$version = variable_get('smember_version', 'beta');
+$info = (object) plugin_get('smember');
+$version = isset($info->plugin_version) ? $info->plugin_version : 'beta';
+$version .= isset($info->plugin_build) ? " build $info->plugin_build" : $version;
 $dirmods = "./mods";
 $files = scandir($dirmods);
 sort($files);
