@@ -24,111 +24,22 @@ if ( ! defined('SENAYAN_BASE_DIR')) { exit(); }
 if (!$can_read)
 	die('<div class="errorBox">You dont have enough privileges to view this section</div>');
 
+// mengambil konfigurasi kartu
 $card_conf = json_decode(variable_get('smember_card_conf'));
 
+// mengambil daftar nama kolom tabel member, dan urutan kolom
 $base_cols_name = base_cols_name('member');
 $fcols = cols_get('smember');
-$order_cols = cols_order_get('smember');
 
-if (count($order_cols) > 0)
-{
-	$columns = array();
-	foreach ($order_cols as $key => $val)
-	{
-		if (array_key_exists($key, $base_cols_name))
-		{
-			$col_arrs = array(
-				'label' => $base_cols_name[$key],
-				'name' => $key,
-			);
-			if (isset($columns[$val]))
-			{
-				$columns[$val+1] = $col_arrs;
-			}
-			else
-				$columns[$val] = $col_arrs;
-			unset($col_arrs);
-		}
-	}
-	
-	if (isset($columns) AND is_array($columns))
-	{
-		ksort($columns);
-		$num_cols = count($columns);
-		$thead = '<thead><tr><th colspan="%d">' . __('Members Details') . '</th></tr><tr>';
-		$tbody = '<tbody><tr><td colspan="%d" class="dataTables_empty">' . __('Loading data from server') . '</td></tr></tbody>';
-		$tfoot = '<tfoot><tr>';
-		$php_js = 'var phpDef = { %s };';
-		$js_def = array();
-		$js_def['aoColumnDefs'] = array();
-		if (in_array($fcols[0], array('radio', 'checkbox')))
-		{
-			$num_cols++;
-			$thead .= '<th></th>';
-			$tfoot .= '<th></th>';
-			$js_def['aoColumnDefs'][] = ' { "bSortable": false, "aTargets": [ 0 ] } ';
-			$js_def['aoColumnDefs'][] = ' { "sClass": "center", "aTargets": [ 0 ] } ';
-		}
-
-		foreach ($columns as $key => $arr)
-		{
-			$thead .= '<th>' . $arr['label'] . '</th>';
-			$tfoot .= '<th style="padding:0px;"><input value="' . $arr['label'] . '" type="text" class="search_init" /></th>';
-			
-		}
-		if ( ! empty($fcols[2]))
-		{
-			$end_cols = explode(chr(10), $fcols[2]);
-			$i_col = $num_cols;
-			$num_cols += count($end_cols);
-			foreach ($end_cols as $val)
-			{
-				$label = '';
-				$content = $val;
-				$del = explode(":", $val);
-				if (count($del) > 1)
-				{
-					$label = $del[0];
-				}
-				$thead .= sprintf('<th>%s</th>', $label);
-				$tfoot .= '<th></th>';
-				$js_def['aoColumnDefs'][] = sprintf(' { "bSortable": false, "aTargets": [ %d ] } ', $i_col);
-				$i_col ++;
-			}
-		}
-		
-		$thead .= '</tr></thead>';
-		$tfoot .= '</tr></tfoot>';
-		$thead = sprintf($thead, $num_cols);
-		$tbody = sprintf($tbody, $num_cols);
-		$tfoot = sprintf($tfoot, $num_cols);
-
-		if (count($js_def > 0))
-		{
-			$v_arr = array();
-			foreach ($js_def as $key => $val)
-			{
-				if (is_array($val) AND count($val) > 0)
-				{
-					$v_arr[$key] = sprintf(' "%s": [ %s ] ',
-						$key,
-						implode(', ', $val)
-					);
-				}
-			}
-			
-			$v_str = implode(', ', $v_arr);
-			$php_js = sprintf($php_js, $v_str);
-		}
-	}
-}
+$dtables = table_render('smember');
+extract($dtables);
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>SMember Plugin <?php echo $version;?></title>
+	<title><?php echo $name;?> <?php echo $version;?></title>
 	<style type="text/css" title="currentStyle">
 		@import "../../library/dataTables/css/demo_page.css";
 		@import "../../library/dataTables/css/demo_table_jui.css";
@@ -176,42 +87,8 @@ if (count($order_cols) > 0)
 				</div>
 				<table cellpadding="0" cellspacing="0" border="0" class="display" id="members">
 					<?php echo $thead;?>
-					<!--
-					<thead>
-						<tr>
-							<th colspan="6">Members Details</th>
-						</tr>
-						<tr>
-							<th width="4%"></th>
-							<th width="15%">ID</th>
-							<th width="20%">Name</th>
-							<th width="10%">Type</th>
-							<th width="30%">Institution</th>
-							<th>Email</th>
-						</tr>
-					</thead>
-					-->
 					<?php echo $tbody;?>
-					<!--
-					<tbody>
-						<tr>
-							<td colspan="5" class="dataTables_empty">Loading data from server</td>
-						</tr>
-					</tbody>
-					-->
 					<?php echo $tfoot;?>
-					<!--
-					<tfoot>
-						<tr>
-							<th></th>
-							<th style="padding:0px;"><input value="ID" type="text" class="search_init" style="width: 90px;" /></th>
-							<th style="padding:0px;"><input value="Name" type="text" class="search_init" style="width: 115px;" /></th>
-							<th style="padding:0px;"><input value="Type" type="text" class="search_init" style="width: 60px;" /></th>
-							<th style="padding:0px;"><input value="Institution" type="text" class="search_init" style="width: 200px;" /></th>
-							<th style="padding:0px;"><input value="E-mail" type="text" class="search_init" style="width: 200px;" /></th>
-						</tr>
-					</tfoot>
-					-->
 				</table>
 				<div style="margin: 5px 0px;" width="100%">
 					<button type="button" onclick="allcheck(this);" id="btn4" accesskey="A" title="Alt+Shift+A" class="ui-button ui-state-default ui-corner-all"><?php echo __('Check <u>A</u>ll');?></button>
@@ -453,7 +330,7 @@ if (count($order_cols) > 0)
 						<div>
 							<p>
 								<label for="fields" class="lshort"><?php echo __('Select');?>:</label>
-								<select multiple id="fields" name="fields[]"><?php echo $options_fields;?></select>
+								<select multiple id="fields" name="fields[]" size="<?php echo count($mfields);?>"><?php echo $options_fields;?></select>
 								<br /><span><em><?php echo __('Hold Ctrl key for multiple check.');?></em></span>
 							</p>
 						</div>

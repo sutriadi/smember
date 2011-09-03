@@ -65,20 +65,4 @@ if (isset($_GET) && isset($_GET['conf']))
 		else
 			echo json_encode(array('track' => 'gagal'), JSON_FORCE_OBJECT);
 	}
-	else if ($toconf == 'cert')
-	{
-		if (isset($_POST) && count($_POST) > 0)
-		{
-/*
-			variable_set('smember_cert_conf', json_encode($_POST, JSON_FORCE_OBJECT));
-*/
-/*
-			echo '{ "track" : "sukses", }';
-*/
-		}
-/*
-		else
-			echo '{ "track" : "gagal", }';
-*/
-	}
 }

@@ -270,24 +270,30 @@
 	{
 		f=t.form
 		cb=f.elements['members[]']
-		for(n=0;n<cb.length;n++)
-			cb[n].checked=true
+		if(cb){
+			for(n=0;n<cb.length;n++)
+				cb[n].checked=true
+		}
 	}
 	
 	function alluncheck(t)
 	{
 		f=t.form
 		cb=f.elements['members[]']
-		for(n=0;n<cb.length;n++)
-			cb[n].checked=false
+		if(cb){
+			for(n=0;n<cb.length;n++)
+				cb[n].checked=false
+		}
 	}
 	
 	function invertcheck(t)
 	{
 		f=t.form
 		cb=f.elements['members[]']
-		for(n=0;n<cb.length;n++)
-			cb[n].checked=cb[n].checked==true?false:true
+		if(cb){
+			for(n=0;n<cb.length;n++)
+				cb[n].checked=cb[n].checked==true?false:true
+		}
 	}
 	
 	function chtheme(t)

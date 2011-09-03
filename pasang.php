@@ -108,14 +108,14 @@ $dtables = array(
 	'table' => 'smember',
 	'type' => 'member',
 	'title' => 'SMember',
-	'desc' => 'DataTables for plugin SMember.',
+	'desc' => __('DataTables for plugin SMember.'),
 	'first_col' => 'checkbox',
 	'base_cols' => '["member_id","member_name","member_type_id","member_email","inst_name"]',
 	'end_cols' => '',
 	'php_code' => 0,
 	'add_code' => '',
 	'windowed' => 1,
-	'sort' => '{"member_id":"0","member_name":"1","member_type_id":"2","member_email":"4","inst_name":"3"}'
+	'sort' => '{"member_id":"0","member_name":"1","member_type_name":"2","member_email":"5","inst_name":"4"}'
 );
 
 dtable_set($dtables);

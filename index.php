@@ -45,6 +45,7 @@ checken();
 checkref();
 
 $info = (object) plugin_get('smember');
+$name = isset($info->plugin_name) ? $info->plugin_name : 'SMember';
 $version = isset($info->plugin_version) ? $info->plugin_version : 'beta';
 $version .= isset($info->plugin_build) ? " build $info->plugin_build" : $version;
 $dirmods = "./mods";
@@ -56,13 +57,11 @@ foreach ($files as $file)
 	$dirmod = $dirmods . '/' . $file;
 	$optfile = $dirmod . '/opt.php';
 	$mainfile = $dirmod . '/index.php';
-	//~ echo "<pre>$file => $dirmod</pre>";
 	if ($file != "." AND $file != ".." AND ! is_dir($dirmod))
 		continue;
 	if (file_exists($optfile) AND file_exists($mainfile))
 	{
 		include($optfile);
-		//~ $jsfiles[] = $dirmod . '/' . $opt['jsfile'];
 		$options[] = array(
 			'text' => $opt['text'],
 			'target' => 'card_std',
