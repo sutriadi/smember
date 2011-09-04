@@ -10,7 +10,7 @@ $info = array(
 	'name' => 'SMember',
 	'author' => 'Indra Sutriadi Pipii',
 	'version' => '0.5.15.1',
-	'build' => '10370303092011',
+	'build' => '17391304092011',
 	'description' => 'SMember menyediakan fungsionalitas tambahan '
 		. 'berupa kartu member perpustakaan. '
 		. 'SMember bisa diperluas fungsinya oleh para pengguna.',

@@ -21,8 +21,8 @@
  */
 
 if ( ! defined('SENAYAN_BASE_DIR')) { exit(); }
-if (!$can_read)
-	die('<div class="errorBox">You dont have enough privileges to view this section</div>');
+if ( ! $can_read)
+	die(sprintf('<div class="errorBox">%s</div>', __('You dont have enough privileges to view this section')));
 
 // mengambil konfigurasi kartu
 $card_conf = json_decode(variable_get('smember_card_conf'));
@@ -59,11 +59,8 @@ extract($dtables);
 </head>
 <body id="dt_example">
 	<div id="container">
-		<h1>SMember <?php echo $version;?></h1>
+		<h1><?php echo $name;?> <?php echo $version;?></h1>
 		<div id="demo">
-		<!--
-		<input type="button" id="ngetes" value="TEST" />
-		-->
 			<form id="formulir" name="formulir" target="" action="" method="POST">
 				<div style="text-align:left; padding-bottom: 1em; float: left;" class="ui-widget">
 					<label for="dofirst"><?php echo __('<u>G</u>o');?>:</label>

@@ -30,7 +30,7 @@ $can_read = utility::havePrivilege('plugins', 'r');
 $can_read = utility::havePrivilege('plugins', 'w');
 
 if (!$can_read) {
-      die('<div class="errorBox">You dont have enough privileges to view this section</div>');
+      die(sprintf('<div class="errorBox">%s</div>', __('You dont have enough privileges to view this section')));
 }
 
 $conf = $_SESSION['plugins_conf'];
