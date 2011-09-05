@@ -150,7 +150,7 @@
 			}
 			return false;
 		} );
-		$("#card_conf_accordion, #cert_conf_accordion").accordion({
+		$("#card_conf_accordion").accordion({
 			autoHeight: false,
 			collapsible: true,
 			header: "h3"
@@ -269,7 +269,7 @@
 	function allcheck(t)
 	{
 		f=t.form
-		cb=f.elements['members[]']
+		cb=f.elements['member[]']
 		if(cb){
 			for(n=0;n<cb.length;n++)
 				cb[n].checked=true
@@ -279,7 +279,7 @@
 	function alluncheck(t)
 	{
 		f=t.form
-		cb=f.elements['members[]']
+		cb=f.elements['member[]']
 		if(cb){
 			for(n=0;n<cb.length;n++)
 				cb[n].checked=false
@@ -289,16 +289,9 @@
 	function invertcheck(t)
 	{
 		f=t.form
-		cb=f.elements['members[]']
+		cb=f.elements['member[]']
 		if(cb){
 			for(n=0;n<cb.length;n++)
 				cb[n].checked=cb[n].checked==true?false:true
 		}
-	}
-	
-	function chtheme(t)
-	{
-		s=t.selectedIndex
-		if(s!=0)
-			alert('No theme!')
 	}

@@ -20,8 +20,10 @@
  *      MA 02110-1301, USA.
  */
 
+define('INDEX_AUTH', '1');
+
 if (!defined('SENAYAN_BASE_DIR')) {
-	require '../../../../../sysconfig.inc.php';
+	require '../../../../../../sysconfig.inc.php';
 	require SENAYAN_BASE_DIR.'admin/default/session.inc.php';
 }
 require SENAYAN_BASE_DIR.'admin/default/session_check.inc.php';
@@ -34,11 +36,11 @@ if (!$can_read) {
 }
 
 $conf = $_SESSION['plugins_conf'];
-include('../../func.php');
+include('../../../func.php');
 
 checkip();
-checken();
-checkref();
+checken('smember');
+checkref('host');
 
 if (isset($_GET) && isset($_GET['conf']))
 {
