@@ -120,5 +120,4 @@ $dtables = array(
 
 dtable_set($dtables);
 variable_set('smember_version', '0.5.15.1.2');
-variable_set('smember_card_conf', json_encode($cardconf, JSON_FORCE_OBJECT));
-
+variable_set('smember_card_conf', $cardconf, 'json');
