@@ -40,7 +40,7 @@ include('../../../func.php');
 
 checkip();
 checken('smember');
-checkref('host');
+checkref('plugin');
 
 if (isset($_GET) && isset($_GET['conf']))
 {
