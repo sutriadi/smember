@@ -1,5 +1,5 @@
 SMember Plugin for SLiMS
-version 0.5.15.1.2 build 17391304092011
+version 0.6-3.15-2 build 16553903102011
 
 Copyright (c) 1432 H / 2011 M
 Indra Sutriadi Pipii (indra@sutriadi.web.id)
@@ -9,11 +9,11 @@ Daily Development: https://github.com/sutriadi/smember
 
 # Persyaratan System
 - SLiMS 3 Stable 15 "Matoa" (download di http://slims.web.id/)
-- Modul Plugins aktif versi 15.1.2 "Bongkai"
+- Modul Plugins aktif versi 3.15-2.x "Nantu"
   (download di http://sutriadi.web.id/)
 
 # Instalasi
-- uraikan paket instalasi smember-x.x.x.tar.gz di dalam direktori
+- uraikan paket instalasi smember-x.x-x.x.xtar.gz di dalam direktori
   ./admin/modules/plugins/include/ sehingga akan menghasilkan direktori
   ./admin/modules/plugins/includes/smember/
 - masuk ke menu Plugins, kemudian aktifkan plugin SMember
@@ -32,6 +32,9 @@ dari ./sutriadi-smember-xxx menjadi ./smember
 - klik tombol Launch pada baris plugin aktif bernama SMember
 
 CHANGELOG
+03.10.2011
+- penyesuaian plugin dengan ketentuan penulisan kode modul Plugins versi 3.15-2.1
+
 27.08.2011
 - penyesuaian plugin dengan ketentuan penulisan kode modul Plugins versi 15.1.2
 

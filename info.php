@@ -9,8 +9,8 @@
 $info = array(
 	'name' => 'SMember',
 	'author' => 'Indra Sutriadi Pipii',
-	'version' => '0.5.15.1',
-	'build' => '17391304092011',
+	'version' => '0.6-3.15-2',
+	'build' => '16553903102011',
 	'description' => 'SMember menyediakan fungsionalitas tambahan '
 		. 'berupa kartu member perpustakaan. '
 		. 'SMember bisa diperluas fungsinya oleh para pengguna.',
@@ -19,4 +19,6 @@ $info = array(
 	'remove' => 'buang',
 	'block' => null,
 	'menu' => null,
+	'page' => null,
+	'module' => null,
 );

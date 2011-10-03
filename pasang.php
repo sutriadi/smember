@@ -119,5 +119,5 @@ $dtables = array(
 );
 
 dtable_set($dtables);
-variable_set('smember_version', '0.5.15.1.2');
+variable_set('smember_version', '0.6-3.15-2');
 variable_set('smember_card_conf', $cardconf, 'json');

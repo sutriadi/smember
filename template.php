@@ -61,6 +61,9 @@ extract($dtables);
 	<div id="container">
 		<h1><?php echo $name;?> <?php echo $version;?></h1>
 		<div id="demo">
+		<!--
+		<input type="button" id="ngetes" value="TEST" />
+		-->
 			<form id="formulir" name="formulir" target="" action="" method="POST">
 				<div style="text-align:left; padding-bottom: 1em; float: left;" class="ui-widget">
 					<label for="dofirst"><?php echo __('<u>G</u>o');?>:</label>
