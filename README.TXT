@@ -1,5 +1,5 @@
 SMember Plugin for SLiMS
-version 0.6-3.15-2 build 16553903102011
+version 0.5-3.15-2 build 16553903102011
 
 Copyright (c) 1432 H / 2011 M
 Indra Sutriadi Pipii (indra@sutriadi.web.id)
