@@ -47,7 +47,7 @@ checkref();
 $info = (object) plugin_get('smember');
 $name = isset($info->plugin_name) ? $info->plugin_name : 'SMember';
 $version = isset($info->plugin_version) ? $info->plugin_version : 'beta';
-$version .= isset($info->plugin_build) ? " build $info->plugin_build" : $version;
+$version .= isset($info->plugin_build) ? " build $info->plugin_build" : '';
 $dirmods = "./mods";
 $files = scandir($dirmods);
 sort($files);

@@ -24,5 +24,4 @@ if (!defined('MODULES_WEB_ROOT_DIR')) {
 	exit();
 }
 
-variable_del('smember_version');
 variable_del('smember_card_conf');

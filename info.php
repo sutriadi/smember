@@ -17,8 +17,4 @@ $info = array(
 	'type' => 2, // 0 = none (default), 1 = sibling, 2 = new window
 	'install' => 'pasang',
 	'remove' => 'buang',
-	'block' => null,
-	'menu' => null,
-	'page' => null,
-	'module' => null,
 );
