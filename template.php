@@ -110,7 +110,8 @@ extract($dtables);
 		</div>
 		<address style="text-align: center;">
 			Copyright &copy; 1431-1432 H / 2010-2011 M by Indra Sutriadi Pipii.<br />
-			Build with jQuery-UI + dataTables plugin.
+			Build with <a href="http://jqueryui.com/" target="_blank">jQuery-UI</a>
+			+ <a href="http://datatables.net/" target="_blank">dataTables</a> plugin.
 		</address>
 	</div>
 	<div id="dialog" title="<?php echo __('Information');?>">
